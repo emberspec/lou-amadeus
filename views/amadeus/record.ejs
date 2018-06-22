@@ -222,25 +222,47 @@
                             $('.eachSegment').remove();
                             $('#insertPN').text($("#txtRL").val())
 
-                            response.originDestinationDetails.itineraryInfo.forEach(function(flight){
-                            var originalDate = flight.travelProduct.product.depDate;
-                            var orginalDateOfCreation = response.securityInformation.secondRpInformation.creationDate;
+                            if(response.originDestinationDetails.itineraryInfo.length == undefined){
+                                var flight = response.originDestinationDetails.itineraryInfo;
+                                var originalDate = flight.travelProduct.product.depDate;
+                                var orginalDateOfCreation = response.securityInformation.secondRpInformation.creationDate;
 
-                                $('#showResults').append(
-                                    '<tr class="eachSegment">' +
-                                        '<td>' + flight.elementManagementItinerary.reference.number + '</td>' +
-                                        '<td>' + response.travellerInfo.passengerData.travellerInformation.passenger.firstName + ' ' + response.travellerInfo.passengerData.travellerInformation.traveller.surname +'</td>' +
-                                        '<td>' + moment(originalDate, 'DDMMYY').format('YYYY-MM-DD') + '</td>' +
-                                        '<td>' + response.securityInformation.responsibilityInformation.officeId + '</td>' +
-                                        '<td>' + response.securityInformation.responsibilityInformation.agentId + '</td>' +
-                                        '<td>' + moment(orginalDateOfCreation, 'DDMMYY').format('YYYY-MM-DD') + '</td>' +
-                                    '</tr>' 
-                                );
-                            });
-                            
-                            $("#tblPnr").show();
+                                    $('#showResults').append(
+                                        '<tr class="eachSegment">' +
+                                            '<td>' + flight.elementManagementItinerary.reference.number + '</td>' +
+                                            '<td>' + response.travellerInfo.passengerData.travellerInformation.passenger.firstName + ' ' + response.travellerInfo.passengerData.travellerInformation.traveller.surname +'</td>' +
+                                            '<td>' + moment(originalDate, 'DDMMYY').format('YYYY-MM-DD') + '</td>' +
+                                            '<td>' + response.securityInformation.responsibilityInformation.officeId + '</td>' +
+                                            '<td>' + response.securityInformation.responsibilityInformation.agentId + '</td>' +
+                                            '<td>' + moment(orginalDateOfCreation, 'DDMMYY').format('YYYY-MM-DD') + '</td>' +
+                                        '</tr>' 
+                                    );
 
-                            $("#txtRL").val('');
+                                
+                                $("#tblPnr").show();
+
+                                $("#txtRL").val('');
+                            }else{
+                                response.originDestinationDetails.itineraryInfo.forEach(function(flight){
+                                var originalDate = flight.travelProduct.product.depDate;
+                                var orginalDateOfCreation = response.securityInformation.secondRpInformation.creationDate;
+
+                                    $('#showResults').append(
+                                        '<tr class="eachSegment">' +
+                                            '<td>' + flight.elementManagementItinerary.reference.number + '</td>' +
+                                            '<td>' + response.travellerInfo.passengerData.travellerInformation.passenger.firstName + ' ' + response.travellerInfo.passengerData.travellerInformation.traveller.surname +'</td>' +
+                                            '<td>' + moment(originalDate, 'DDMMYY').format('YYYY-MM-DD') + '</td>' +
+                                            '<td>' + response.securityInformation.responsibilityInformation.officeId + '</td>' +
+                                            '<td>' + response.securityInformation.responsibilityInformation.agentId + '</td>' +
+                                            '<td>' + moment(orginalDateOfCreation, 'DDMMYY').format('YYYY-MM-DD') + '</td>' +
+                                        '</tr>' 
+                                    );
+                                });
+                                
+                                $("#tblPnr").show();
+
+                                $("#txtRL").val('');
+                            }
                         }
                     }
                 })

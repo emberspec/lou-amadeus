@@ -8,7 +8,8 @@ router.get('/', (req, res, next) => {
 	if (localStorage.getItem('isLogin') === null) {
 		res.redirect("/login"); 
 	}else{
-		res.render('index', { page: 'dashboard', title: 'Express'} );
+		//res.render('index', { page: 'dashboard', title: 'Express'} );
+		res.redirect("/amadeus/availability"); 
 	}
 
 	
@@ -16,7 +17,7 @@ router.get('/', (req, res, next) => {
 
 
 router.get('/login', (req, res, next) => {
-	if (localStorage.getItem('isLogin')) {
+	if (localStorage.getItem('isLogin') === true) {
 		res.redirect("/"); 
 	}else{
 		res.render('login', { error: '', username: req.body.username, password: req.body.password} );
@@ -52,20 +53,21 @@ router.post('/login', (req, res, next) => {
 			    	md: localStorage.getItem('md')
 			    }
 			}, function (error, response, body) {
-				localStorage.setItem('userLevel', body.data.level.id);
+				// localStorage.setItem('userLevel', body.data.level.id);
 
-				if (localStorage.getItem('userLevel') === "3") {
-					res.redirect("admin/dashboard"); 
-				}else if(localStorage.getItem('userLevel') === "2"){
-					return console.log("encoder");
-					next();
-				}else if(localStorage.getItem('userLevel') === "1"){
-					return console.log("manager");
-					next();
-				}else{
-					return console('Undefined User Level');
-					next();
-				}
+				// if (localStorage.getItem('userLevel') === "3") {
+				// 	res.redirect("admin/dashboard"); 
+				// }else if(localStorage.getItem('userLevel') === "2"){
+				// 	return console.log("encoder");
+				// 	next();
+				// }else if(localStorage.getItem('userLevel') === "1"){
+				// 	return console.log("manager");
+				// 	next();
+				// }else{
+				// 	return console('Undefined User Level');
+				// 	next();
+				// }
+				res.redirect("amadeus/availability"); 
 
 			});
 

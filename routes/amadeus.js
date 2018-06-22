@@ -6,7 +6,13 @@ let contacts = [];
 let itineraries = [];
 
 router.get('/availability', (req, res, next) => {
-	res.render('amadeus/index');
+	console.log(localStorage.getItem('isLogin'));
+	if (localStorage.getItem('isLogin') === "true") {
+		res.render('amadeus/index');
+	}else{
+		res.redirect("/login");	
+	}
+	
 });
 
 router.post('/availability', (req, res, next) => {
@@ -124,6 +130,7 @@ router.post('/record', (req, res, next) => {
 	    	
 	    	//console.log(body.data.pnrHeader.reservationInfo.reservation.controlNumber);
 	    	if(body.code == 100){
+	    		console.log(body.data);
 	    		res.send(body.data);
 	    	}
 	    	
