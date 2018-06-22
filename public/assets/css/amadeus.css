@@ -1,0 +1,37 @@
+.modal-bottom-pad {
+	padding-bottom: 20px;
+}
+
+.classes-card {
+	padding-left: 30px;
+	padding-right: 30px;
+	cursor: pointer;
+
+}
+
+.flight-queue {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	width: 80%;
+}
+
+.queue-destination-text {
+	font-size: 2em;
+}
+
+.queue-number-text{
+	font-size: 2.3em;
+}
+
+.queue-container {
+	padding-bottom: 5px;
+	background-color: #b0bec5 !important;
+	background-image: url("../img/bg-view.jpeg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.invi {
+	display: none;
+}
