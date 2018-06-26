@@ -91,7 +91,7 @@ router.post('/contacts', (req, res, next) => {
 		    	itineraries = [];
 		    	contacts = [];
 	    	}else if(body.status == "ERR"){
-	    		res.send(body.messages[0].text);
+	    		res.send("Error : " + body.messages[0].text);
 	    		passengers = [];
 		    	segments = [];
 		    	itineraries = [];

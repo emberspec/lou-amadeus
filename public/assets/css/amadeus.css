@@ -35,3 +35,43 @@
 .invi {
 	display: none;
 }
+
+@media (min-width: 1px) { 
+
+	.eachFlight {
+	  width: 100%;
+	  display: inline-block;
+	}
+
+}
+
+@media (min-width: 768px) { 
+
+	.eachFlight {
+	  width: 50%;
+	  display: inline-block;
+	}
+
+}
+
+
+@media (min-width: 1300px) {
+
+	.eachFlight {
+	  width: 33.33333333% !important;
+	}
+}
+    
+.inlineBlock {
+	display: inline-block;
+}
+
+.inviImportant {
+	display: none;
+}
+
+
+.input-validation {
+	color: red;
+	display: none;
+}

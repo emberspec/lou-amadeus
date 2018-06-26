@@ -122,48 +122,55 @@
                 <div class="container-fluid">
 
                     <div class="col-md-12 alert queue-container" style="min-height: 177px;">
-                        <div class="col-md-2 pull-left">
-                            <button type="submit" id="btnBook" class="btn btn-lg pull-left" style="background-color: #26a69a; width: 187px; display:none; " data-toggle="modal" data-target=".mdlBook"><i class="material-icons ">play_arrow</i> BOOK FLIGHTS </button> 
-                            <button type="submit" id="btnSell" class="btn btn-lg pull-left" style="background-color: #26a69a; width: 187px; display:none;  " ><i class="material-icons ">play_arrow</i> SELL FLIGHTS </button> 
-                        </div>
-                        <center id="queue-banner" >
+                        <div class=" col-xs-12 col-md-2 btnBookSell1" style=" display:none;">
+                            <button type="submit" id="btnBook" class="btn btn-lg  " style="background-color: #26a69a; ; " data-toggle="modal" data-target=".mdlBook"><i class="material-icons ">play_arrow</i> BOOK FLIGHTS </button> 
+                            
                             
 
+                        </div>
+
+
                             
-                        </center>
+
+                        <div class="col-md-9" id="queue-banner" >
+                            
+                        </div>
                         
                     </div>
                     
                     
-                    <div class="col-md-3">
+                    <div class="col-md-12 col-sm-3" id="srcFlight">
                         <div class="card">
                             <div class="card-header" data-background-color="blue">
                                 <h4 class="title">Search Flight</h4> 
                             </div>
                             <div class="card-content">
-                                <form>   
+                                <form id="frmAvailability">   
                                     <div class="col-md-12" style="padding-left: 5px !important">
                                         <div class="form-group label-floating is-empty">
                                             <label class="control-label">Origin</label>
-                                            <input type="text" id="txtOrigin" class="form-control">
+                                            <input type="text" id="txtOrigin" class="form-control txtField">
+                                            <p class='input-validation txtOriginErrorMessage'>*Origin is required</p>
                                         <span class="material-input"></span></div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group label-floating is-empty">
                                             <label class="control-label">Destination</label>
-                                            <input type="text" id="txtDestination" class="form-control">
+                                            <input type="text" id="txtDestination" class="form-control txtField">
+                                            <p class='input-validation txtDestinationErrorMessage'>*Destination is required</p>
                                         <span class="material-input"></span></div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group label-floating is-empty">
                                             <label class="control-label">Departure Date</label>
-                                            <input type="text" id="txtDepartureDate" class="form-control datepicker" >
+                                            <input type="text" id="txtDepartureDate" class="form-control datepicker txtField" >
+                                            <p class='input-validation txtDepartureDateErrorMessage'>*First Name is required</p>
                                         <span class="material-input"></span></div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group label-floating is-empty">
                                             <label class="control-label">Arrival Date</label>
-                                            <input type="text" id="txtArrivalDate" class="form-control datepicker">
+                                            <input type="text" id="txtArrivalDate" class="form-control datepicker " disabled="">
                                         <span class="material-input"></span></div>
                                     </div>
                                     
@@ -175,9 +182,9 @@
                     </div>
 
 
-                    <span id="showResults">
+                    <div class="" id="showResults">
                         
-                    </span>
+                    </div>
 
 
 
@@ -232,6 +239,7 @@
                                     
                                     <button type="submit" id="btnSubmitPassenger" class="btn btn-info pull-right">Submit</button>
                                     <button type="submit" id="btnAddPassenger" style="display:none;" class="btn btn-info pull-right">Add Passenger</button>
+                                    <button type="submit" id="btnClosePssngrModal"  class="btn btn-info pull-right">Close</button>
                                     
                                     <div class="clearfix"></div>
                                
@@ -276,206 +284,231 @@
 
         $('#txtArrivalDate').datepicker({
             format: 'yyyy-mm-dd',
-            startDate: '0d'
+
         });
 
-        // $('#txtDepartureDate').datepicker().on('changeDate', function (selected) {
-        //     var minDate = new Date(selected.date.valueOf());
-        //     $('#txtArrivalDate').datepicker('startDate', new Date($('#txtDepartureDate').val()));
-        //     alert(minDate);
-        // });
+        $("#txtDepartureDate").change(function() {
+            $("#txtArrivalDate").datepicker("clearDates");
+            $("#txtArrivalDate").datepicker("setStartDate", new Date($(txtDepartureDate).val()));
+
+            $('#txtArrivalDate').prop('disabled', false);
+        })
+
 
         var passengerID = 0;
         var flightID = 0;
 
+        function validator() {
+
+            var $form = $("#frmAvailability");
+            var toReturn = true;
+
+            //loop on each fields to check for errors
+            $(".txtField", $form).each(function () {
+
+                var txtId = $(this).attr('id'),
+                    errorName = "." + txtId + "ErrorMessage";
+
+                if ($(this).val() == "") {
+                    $(errorName).show();
+                    toReturn = false;
+                }else {
+                    $(errorName).hide();
+                }
+                
+            });
+
+            return toReturn;
+        }
+
         $('form').submit(function( event ) {
             
             event.preventDefault(); 
-
-            $.ajax({
-                url:"./availability",
-                type:"POST",
-                data:{
-                    departure_date: $('#txtDepartureDate').val()  || '',
-                    from: $('#txtOrigin').val() || '',
-                    to: $('#txtDestination').val()  || '',
-                    arrival_date : $('#txtArrivalDate').val()  || '',
-                },
-                contentType:"application/x-www-form-urlencoded; charset=UTF-8",
-                dataType:"json",
-                success: function(response, status){
-                    $('#showResults').empty();
-                    $('#eachClass').empty();
-                    var i = 0 
-                    response.availableFlights.forEach(function(flight){ 
-                        i++;
-                        $('#showResults').append(
-                            '<div class="col-md-3 col-sm-4 " data-toggle="modal" data-target=".modal' + i + '" style="cursor: pointer">' +
-                                '<div class="card alert alert-info">' +
-                                    '<div class="col-md-6 text-center">' +
-                                        '<h3>' + flight.flightDetails.departure.location + '</h3>' +
-                                        '<h4>' + flight.flightDetails.departure.date + ' | ' + flight.flightDetails.departure.time + '</h4>' +
-                                    '</div>' +
-                                    '<div class="col-md-6 text-center">' +
-                                        '<h3>' + flight.flightDetails.arrival.location + '</h3>' +
-                                        '<h4>' + flight.flightDetails.arrival.date + ' | ' + flight.flightDetails.arrival.time + '</h4>' +
+            if(validator()) { 
+                $.ajax({
+                    url:"./availability",
+                    type:"POST",
+                    data:{
+                        departure_date: $('#txtDepartureDate').val()  || '',
+                        from: $('#txtOrigin').val() || '',
+                        to: $('#txtDestination').val()  || '',
+                        arrival_date : $('#txtArrivalDate').val()  || '',
+                    },
+                    contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+                    dataType:"json",
+                    success: function(response, status){
+                        $('#showResults').empty();
+                        $('#eachClass').empty();
+                        var i = 0 
+                        response.availableFlights.forEach(function(flight){ 
+                            i++;
+                            $('#showResults').append(
+                                '<div class="col-md-4 col-sm-6 col-xs-6 col-lg-2 flightsRslt" data-toggle="modal" data-target=".modal' + i + '" style="cursor: pointer">' +
+                                    '<div class="card alert alert-info">' +
+                                        '<div class="col-md-6 text-center">' +
+                                            '<h3>' + flight.flightDetails.departure.location + '</h3>' +
+                                            '<h4>' + moment(flight.flightDetails.departure.date, 'DDMMYY').format('YYYY-MM-DD') + ' </h4><h4> ' + flight.flightDetails.departure.time.slice(0, 2) + ":" + flight.flightDetails.departure.time.slice(2) + '</h4>' +
+                                        '</div>' +
+                                        '<div class="col-md-6 text-center">' +
+                                            '<h3>' + flight.flightDetails.arrival.location + '</h3>' +
+                                            '<h4>' + moment(flight.flightDetails.arrival.date, 'DDMMYY').format('YYYY-MM-DD') + ' </h4><h4> ' + flight.flightDetails.arrival.time.slice(0, 2) + ":" + flight.flightDetails.arrival.time.slice(2) + 
+                                        '</div>' +
                                     '</div>' +
                                 '</div>' +
-                            '</div>' +
 
-                            '<div class="modal modal' + i + '" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabe' + i + '" >' +
-                                '<div class="modal-dialog modal-lg" role="document" style="margin-top: 15px !important;">' +
-                                    '<div class="modal-content ">' +
-                                        '<div class="col-md-12 col-sm-12 ">' +
-                                            '<div class="card modal-bottom-pad">' +
-                                                '<div class="row">' +
-                                                    '<div class="col-md-12 text-center">' +
-                                                        '<h3>' + flight.flightDetails.flightNumber + '</h3>' +
-                                                        '<h4>Flight Number</h4>' +
-                                                    '</div>' +
-                                                    '<div class="col-md-3 text-center">' +
-                                                        '<h3>' +flight.flightDetails.departure.location + '</h3>' +
-                                                        '<h4>' + flight.flightDetails.departure.date + ' | ' + flight.flightDetails.departure.time + '</h4>' +
-                                                    '</div>' +
-                                                    '<div class="col-md-3 text-center">' +
-                                                        '<h3>' + flight.flightDetails.arrival.location + '</h3>' +
-                                                        '<h4>' + flight.flightDetails.arrival.date + ' | ' + flight.flightDetails.arrival.time + '</h4>' +
-                                                    '</div>' +
-                                                    '<div class="col-md-3 text-center">' +
-                                                        '<h3>' + flight.flightDetails.carrierCode + '</h3>' +
-                                                        '<h4>Carrier Code</h4>' +
-                                                    '</div>' +
-                                                    '<div class="col-md-3 text-center">' +
-                                                        '<h3>' +flight.flightDetails.equipmentType  + '</h3>' +
-                                                        '<h4>Equipment Type</h4>' +
-                                                    '</div>' +
-                                                    '<div class="col-md-3 text-center">' +
-                                                        '<h3>' + flight.lineItemNumber + '</h3>' +
-                                                        '<h4>Line Item Number</h4>' +
-                                                    '</div>' +
-                                                    '<div class="col-md-3 text-center">' +
-                                                        '<h3>' + flight.stops + '</h3>' +
-                                                        '<h4>Stops</h4>' +
-                                                    '</div>' +
-                                                    '<div class="col-md-3 text-center">' +
-                                                        '<h3>' + flight.productClass + '</h3>' +
-                                                        '<h4>Product Class</h4>' +
-                                                    '</div>' +
-                                                    '<br>' +
-                                                    '<div class="col-md-12 text-center">' +
-                                                        '<h3> Available Classes :</h3>' +
-                                                    '</div>' +
+                                '<div class="modal modal' + i + '" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabe' + i + '" >' +
+                                    '<div class="modal-dialog modal-lg" role="document" style="margin-top: 15px !important;">' +
+                                        '<div class="modal-content ">' +
+                                            '<div class="col-md-12 col-sm-12 ">' +
+                                                '<div class="card modal-bottom-pad">' +
+                                                    '<div class="row">' +
+                                                        '<div class="col-md-12 text-center">' +
+                                                            '<h3>' + flight.flightDetails.flightNumber + '</h3>' +
+                                                            '<h4>Flight Number</h4>' +
+                                                        '</div>' +
+                                                        '<div class="col-md-3 col-xs-6 text-center">' +
+                                                            '<h3>' +flight.flightDetails.departure.location + '</h3>' +
+                                                            '<h4>' + flight.flightDetails.departure.date + ' | ' + flight.flightDetails.departure.time + '</h4>' +
+                                                        '</div>' +
+                                                        '<div class="col-md-3 col-xs-6 text-center">' +
+                                                            '<h3>' + flight.flightDetails.arrival.location + '</h3>' +
+                                                            '<h4>' + flight.flightDetails.arrival.date + ' | ' + flight.flightDetails.arrival.time + '</h4>' +
+                                                        '</div>' +
+                                                        '<div class="col-md-3 col-xs-6 text-center">' +
+                                                            '<h3>' + flight.flightDetails.carrierCode + '</h3>' +
+                                                            '<h4>Carrier Code</h4>' +
+                                                        '</div>' +
+                                                        '<div class="col-md-3 col-xs-6 text-center">' +
+                                                            '<h3>' +flight.flightDetails.equipmentType  + '</h3>' +
+                                                            '<h4>Equipment Type</h4>' +
+                                                        '</div>' +
+                                                        '<div class="col-md-3 col-xs-6 text-center">' +
+                                                            '<h3>' + flight.lineItemNumber + '</h3>' +
+                                                            '<h4>Line Item Number</h4>' +
+                                                        '</div>' +
+                                                        '<div class="col-md-3 col-xs-6 text-center">' +
+                                                            '<h3>' + flight.stops + '</h3>' +
+                                                            '<h4>Stops</h4>' +
+                                                        '</div>' +
+                                                        '<div class="col-md-3 col-xs-6 text-center">' +
+                                                            '<h3>' + flight.productClass + '</h3>' +
+                                                            '<h4>Product Class</h4>' +
+                                                        '</div>' +
+                                                        '<br>' +
+                                                        '<div class="col-md-12 col-xs-12 text-center">' +
+                                                            '<h3> Available Classes :</h3>' +
+                                                        '</div>' +
 
-                                                    '<span id="eachClass' + i + '"></span>' +
+                                                        '<span id="eachClass' + i + '"></span>' +
+                                                    '</div>' +
                                                 '</div>' +
                                             '</div>' +
                                         '</div>' +
                                     '</div>' +
-                                '</div>' +
-                            '</div>'
+                                '</div>'
 
-                        
                             
-                            
-                        );
-                        
-                        flight.classes.forEach(function(eachClass){
-                            $('#eachClass' + i).append(
-
-                                    '<div class=" col-md-3 text-center classes-card">' +
-                                        '<div class="alert alert-info class-card-id">' +
-                                            '<span class="get-flight-number" style="display:none;">' + flight.flightDetails.flightNumber + '</span>' +
-                                            '<span class="get-flight-date" style="display:none;">' + flight.flightDetails.departure.date + '</span>' +
-                                            '<span class="get-flight-departure" style="display:none;">' + flight.flightDetails.departure.location + '</span>' +
-                                            '<span class="get-flight-arrival" style="display:none;">' + flight.flightDetails.arrival.location + '</span>' +
-                                            '<span class="get-flight-time" style="display:none;">' + flight.flightDetails.departure.time + '</span>' +
-                                            '<span class="get-flight-ITR-origin" style="display:none;">' + response.queryDetails.origin + '</span>' +
-                                            '<span class="get-flight-ITR-destination" style="display:none;">' + response.queryDetails.destination + '</span>' +
-                                            '<h4 class="flight-class">Class: ' + eachClass.class + '</h4>' +
-                                            '<h4>Availability: ' + eachClass.availableCount + '</h4>' +
-                                        '</div>' +
-                                    '</div>' 
+                                
                                 
                             );
+                            
+                            flight.classes.forEach(function(eachClass){
+                                $('#eachClass' + i).append(
+
+                                        '<div class=" col-md-3 col-xs-6 text-center classes-card">' +
+                                            '<div class="alert alert-info class-card-id">' +
+                                                '<span class="get-flight-number" style="display:none;">' + flight.flightDetails.flightNumber + '</span>' +
+                                                '<span class="get-flight-date" style="display:none;">' + flight.flightDetails.departure.date + '</span>' +
+                                                '<span class="get-flight-departure" style="display:none;">' + flight.flightDetails.departure.location + '</span>' +
+                                                '<span class="get-flight-arrival" style="display:none;">' + flight.flightDetails.arrival.location + '</span>' +
+                                                '<span class="get-flight-time" style="display:none;">' + flight.flightDetails.departure.time + '</span>' +
+                                                '<span class="get-flight-ITR-origin" style="display:none;">' + response.queryDetails.origin + '</span>' +
+                                                '<span class="get-flight-ITR-destination" style="display:none;">' + response.queryDetails.destination + '</span>' +
+                                                '<h4 class="flight-class">Class: ' + eachClass.class + '</h4>' +
+                                                '<h4>Availability: ' + eachClass.availableCount + '</h4>' +
+                                            '</div>' +
+                                        '</div>' 
+                                    
+                                );
+                            });
+                            
+
+                
                         });
-                        
-
-            
-                    });
 
 
-                    $(".class-card-id").click(function(){
-                        flightID = flightID + 1;
-                        var toIdentify = $(this).children('.get-flight-number').text() + '(' + $(this).children('.flight-class').text().substring(7) + ')';
+                        $(".class-card-id").click(function(){
+                            flightID = flightID + 1;
+                            var toIdentify = $(this).children('.get-flight-number').text() + '(' + $(this).children('.flight-class').text().substring(7) + ')';
 
-                        var isRepeat = false;
-                        $('.eachFlightIdentifier').each(function(i, obj) {
+                            var isRepeat = false;
+                            $('.eachFlightIdentifier').each(function(i, obj) {
 
-                            if($(this).text() == toIdentify){
-                                alert('Class is already selected');
-                                isRepeat = true;
-                                return false;
+                                if($(this).text() == toIdentify){
+                                    alert('Class is already selected');
+                                    isRepeat = true;
+                                    return false;
+                                }
+                            });
+
+                            if(!isRepeat){
+
+                                $( ".btnBookSell1" ).show(); 
+                                                  
+                                var flightDetails = {
+                                    flightClass  : $(this).children('.flight-class').text().substring(7),
+                                    flightNumber : $(this).children('.get-flight-number').text(),
+                                    flightdate: $(this).children('.get-flight-date').text(),
+                                    flightdeparture : $(this).children('.get-flight-departure').text(),
+                                    flightarrival : $(this).children('.get-flight-arrival').text(),
+                                };
+
+                                
+                                $('#queue-banner').append(
+
+                                    '<div class="col-md-4   eachFlight" id="flight' + flightID + '">' +
+                                        '<div class="alert text-center flight-queue eachSegments" id="thisSegment' + flightID + '" style="margin: auto; margin-top: 10px;"> ' +
+                                            '<button type="button" aria-hidden="true" class="close btnRemoveFlight" id="flightRmvBtn' + flightID + '" style="color:black">×</button>' +
+                                            '<br>' +
+                                            '<p class="queue-destination-text">' + $(this).children('.get-flight-departure').text() +' <i class="material-icons">airplanemode_active</i> ' + $(this).children('.get-flight-arrival').text() + '</p>' +
+                                            '<h3 class="queue-number-text eachFlightIdentifier">' + $(this).children('.get-flight-number').text() + '('+ $(this).children('.flight-class').text().substring(7) +')</h3>' +
+                                            '<span id="get-segment-number' + flightID + '" style="display:none;">' + $(this).children('.get-flight-number').text() + '</span>' +
+                                            '<span id="get-segment-date' + flightID + '" style="display:none;">' + $(this).children('.get-flight-date').text() + '</span>' +
+                                            '<span id="get-segment-departure' + flightID + '" style="display:none;">' + $(this).children('.get-flight-departure').text() + '</span>' +
+                                            '<span id="get-segment-arrival' + flightID + '" style="display:none;">' + $(this).children('.get-flight-arrival').text() + '</span>' +
+                                            '<span id="get-segment-class' + flightID + '" style="display:none;">' + $(this).children('.flight-class').text().substring(7) + '</span>' +
+                                            '<span id="get-segment-time' + flightID + '" style="display:none;">' + $(this).children('.get-flight-time').text() + '</span>' +
+                                            '<span id="get-flight-ITR-origin' + flightID + '" style="display:none;">' + $(this).children('.get-flight-ITR-origin').text() + '</span>' +
+                                            '<span id="get-flight-ITR-destination' + flightID + '" style="display:none;">' + $(this).children('.get-flight-ITR-destination').text() + '</span>' +
+                                        '</div>' +
+                                    '</div>'
+                                    
+                                );
+
+                                $("#flightRmvBtn" + flightID).click(function(){
+                                    var first_div = $(this).parent();
+                                    var main_div = $(first_div).parent();
+
+                                    var confirmation = confirm("Delete this flight?");
+
+                                    if(confirmation){
+                                        
+                                        $(main_div).remove();
+                                        if($('.eachFlight').length == 0){
+                                            $('.btnBookSell1').hide();
+                                        }
+                                    }
+                                    
+                                    
+                                });
                             }
                         });
 
-                        if(!isRepeat){
-                            $('#btnBook').show();  
-                            $('#btnSell').show();  
-                                              
-                            var flightDetails = {
-                                flightClass  : $(this).children('.flight-class').text().substring(7),
-                                flightNumber : $(this).children('.get-flight-number').text(),
-                                flightdate: $(this).children('.get-flight-date').text(),
-                                flightdeparture : $(this).children('.get-flight-departure').text(),
-                                flightarrival : $(this).children('.get-flight-arrival').text(),
-                            };
+                        
 
-                            
-                            $('#queue-banner').append(
-
-                                '<div class="col-md-2 eachFlight" id="flight' + flightID + '">' +
-                                    '<div class="alert text-center flight-queue eachSegments" id="thisSegment' + flightID + '">' +
-                                        '<button type="button" aria-hidden="true" class="close btnRemoveFlight" id="flightRmvBtn' + flightID + '" style="color:black">×</button>' +
-                                        '<br>' +
-                                        '<p class="queue-destination-text">' + $(this).children('.get-flight-departure').text() +' <i class="material-icons">airplanemode_active</i> ' + $(this).children('.get-flight-arrival').text() + '</p>' +
-                                        '<h3 class="queue-number-text eachFlightIdentifier">' + $(this).children('.get-flight-number').text() + '('+ $(this).children('.flight-class').text().substring(7) +')</h3>' +
-                                        '<span id="get-segment-number' + flightID + '" style="display:none;">' + $(this).children('.get-flight-number').text() + '</span>' +
-                                        '<span id="get-segment-date' + flightID + '" style="display:none;">' + $(this).children('.get-flight-date').text() + '</span>' +
-                                        '<span id="get-segment-departure' + flightID + '" style="display:none;">' + $(this).children('.get-flight-departure').text() + '</span>' +
-                                        '<span id="get-segment-arrival' + flightID + '" style="display:none;">' + $(this).children('.get-flight-arrival').text() + '</span>' +
-                                        '<span id="get-segment-class' + flightID + '" style="display:none;">' + $(this).children('.flight-class').text().substring(7) + '</span>' +
-                                        '<span id="get-segment-time' + flightID + '" style="display:none;">' + $(this).children('.get-flight-time').text() + '</span>' +
-                                        '<span id="get-flight-ITR-origin' + flightID + '" style="display:none;">' + $(this).children('.get-flight-ITR-origin').text() + '</span>' +
-                                        '<span id="get-flight-ITR-destination' + flightID + '" style="display:none;">' + $(this).children('.get-flight-ITR-destination').text() + '</span>' +
-                                    '</div>' +
-                                '</div>'
-                                
-                            );
-
-                            $("#flightRmvBtn" + flightID).click(function(){
-                                var first_div = $(this).parent();
-                                var main_div = $(first_div).parent();
-
-                                var confirmation = confirm("Delete this flight?");
-
-                                if(confirmation){
-                                    
-                                    $(main_div).remove();
-                                    if($('.eachFlight').length == 0){
-                                        $('#btnBook').hide();
-                                        $('#btnSell').hide()
-                                    }
-                                }
-                                
-                                
-                            });
-                        }
-                    });
-
-                    
-
-                }
-            })
+                    }
+                })
+            }
             
         });
 
@@ -567,6 +600,11 @@
         //         }
         //     });
         // });
+
+        $('#btnClosePssngrModal').click(function(){
+            $('.mdlBook').modal('toggle');
+            
+        });
 
         $('#btnSubmitPassenger').click(function(){
 
@@ -767,12 +805,16 @@
                                             statusCode: {
                                                 200: function (response) {
                                                     alert(response);
-                                                    $('.eachFlight').remove();
-                                                    //$('.eachPassenger').remove();
-                                                    $('#btnBook').hide();
-                                                    $('#btnSell').hide();
-                                                    $('.mdltxts').val('');
-                                                    $('.mdlBook').modal('hide');
+                                                    var responseType = response.substring(0, 5);
+                                                    alert(responseType);
+                                                    if(responseType == "Error" ){
+                                                    }else{
+                                                        $('.eachFlight').remove();
+                                                        //$('.eachPassenger').remove();
+                                                        $('.btnBookSell1').hide();
+                                                        $('.mdltxts').val('');
+                                                        $('.mdlBook').modal('hide');
+                                                    }
 
                                                 }
                                             }

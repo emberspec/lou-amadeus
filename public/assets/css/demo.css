@@ -15,6 +15,10 @@
         width: 100%;
         bottom: 10px;
     }
+
+    #rcdNumber {
+        width: 100%;
+    }
 }
 
 #map {
@@ -62,4 +66,75 @@
 
 .tim-row h3 {
     margin-top: 0;
+}
+
+
+
+
+@media (min-width: 1500px) {
+    #rcdNumber {
+        width: 20%;
+    }
+
+
+    #rcdResult {
+        width: 80% !important;
+    }
+
+
+}
+
+@media (min-width: 1200px) {
+
+
+    #rcdResult {
+        width: 100%;
+    }
+
+    
+}
+
+@media (min-width: 1570px) {
+    
+    #srcFlight {
+        width: 25% !important;
+    }
+
+
+    .flightsRslt {
+        width: 25% !important;
+    }
+    
+
+}
+
+@media (min-width: 1px) {
+    
+    #showResults {
+        width: 100%;
+    }
+
+    #srcFlight {
+        width: 100%;
+    }
+
+    
+
+
+
+}
+
+@media (min-width: 1000px) {
+    
+
+
+    #srcFlight {
+        width: 50%;
+    }
+
+    .flightsRslt {
+        width: 50%;
+    }
+
+
 }
