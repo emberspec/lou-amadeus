@@ -71,43 +71,6 @@
 
 
 
-@media (min-width: 1500px) {
-    #rcdNumber {
-        width: 20%;
-    }
-
-
-    #rcdResult {
-        width: 80% !important;
-    }
-
-
-}
-
-@media (min-width: 1200px) {
-
-
-    #rcdResult {
-        width: 100%;
-    }
-
-    
-}
-
-@media (min-width: 1570px) {
-    
-    #srcFlight {
-        width: 25% !important;
-    }
-
-
-    .flightsRslt {
-        width: 25% !important;
-    }
-    
-
-}
-
 @media (min-width: 1px) {
     
     #showResults {
@@ -118,7 +81,10 @@
         width: 100%;
     }
 
-    
+    #txtLegends {
+        width: 100% !important;
+    }
+
 
 
 
@@ -136,5 +102,50 @@
         width: 50%;
     }
 
+    #txtLegends {
+        width: 50% !important;
+    }
+
+
+}
+
+@media (min-width: 1200px) {
+
+
+    #rcdResult {
+        width: 100%;
+    }
+
+    
+}
+
+@media (min-width: 1500px) {
+    #rcdNumber {
+        width: 20%;
+    }
+
+
+    #rcdResult {
+        width: 80% !important;
+    }
+
+
+}
+
+@media (min-width: 1570px) {
+    
+    #srcFlight {
+        width: 25% !important;
+    }
+
+    #txtLegends {
+        width: 75% !important;
+    }
+
+
+    .flightsRslt {
+        width: 25% !important;
+    }
+    
 
 }

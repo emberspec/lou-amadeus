@@ -55,7 +55,7 @@
 }
 
 
-@media (min-width: 1300px) {
+@media (min-width: 1500px) {
 
 	.eachFlight {
 	  width: 33.33333333% !important;
@@ -74,4 +74,18 @@
 .input-validation {
 	color: red;
 	display: none;
+}
+
+.input-label-float {
+	top: -28px !important;
+    left: 0 !important;
+    font-size: 11px !important;
+    line-height: 1.07143 !important;
+}
+
+.origin-destination-label {
+	padding-top: 30px;
+	margin-bottom: -10px;
+	margin-left: -10px;
+	font-size: 1.5em;
 }

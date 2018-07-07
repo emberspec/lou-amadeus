@@ -4,9 +4,10 @@ const request = require('request');
 let passengers = [];
 let contacts = [];
 let itineraries = [];
+let entry = {};
 
 router.get('/availability', (req, res, next) => {
-	console.log(localStorage.getItem('isLogin'));
+	//console.log(localStorage.getItem('isLogin'));
 	if (localStorage.getItem('isLogin') === "true") {
 		res.render('amadeus/index');
 	}else{
@@ -70,33 +71,47 @@ router.post('/contacts', (req, res, next) => {
 
 	//console.log(contacts);
 
+	entry = {
+		'receivedFrom' : 'test',
+		'passengers' : passengers,
+		'itineraries' : itineraries,
+		'elements' : contacts
+	};
+	console.log(entry);
 	request.post({
-	    url: 'http://esales.limcontravel.com/api/amadeus/pnr/create',
+	    url: 'http://esales.limcontravel.com/api/amadeus/v2/pnr/create',
 	    json: true,
 	    form: {
-	    	passengers: passengers || '',
-	    	itineraries: itineraries || '',
-	    	contacts: contacts || ''
+	    	entry : entry
 	    }
 	}, function (error, response, body) {
 		
 	    if (!error && response.statusCode === 200) {
 	    	console.log(body.data);
+	    	console.log(body.status);
 	    	//console.log(body.data.pnrHeader.reservationInfo.reservation.controlNumber);
-	    	if(body.status == "OK"){
+	    	if(body.message == "success"){
 	    		console.log(body.data);
-	    		res.send(body.response.pnrHeader.reservationInfo.reservation.controlNumber);
+	    		res.send(body.data.pnrHeader.reservationInfo.reservation.controlNumber);
 		    	passengers = [];
 		    	segments = [];
 		    	itineraries = [];
 		    	contacts = [];
-	    	}else if(body.status == "ERR"){
-	    		res.send("Error : " + body.messages[0].text);
+		    	entry = {};
+	    	}else if(body.message == "error"){
+	    		res.send("Error : " + body.data);
 	    		passengers = [];
 		    	segments = [];
 		    	itineraries = [];
 		    	contacts = [];
-	    	}	
+		    	entry = {};
+	    	}else{
+	    		passengers = [];
+		    	segments = [];
+		    	itineraries = [];
+		    	contacts = [];
+		    	entry = {};
+	    	}
 	    	
 	    }else{
 	    	res.send(body.data);
@@ -104,6 +119,7 @@ router.post('/contacts', (req, res, next) => {
 	    	segments = [];
 	    	itineraries = [];
 	    	contacts = [];
+	    	entry = {};
     }
 	});
 
@@ -125,7 +141,7 @@ router.post('/record', (req, res, next) => {
 	    	record_locator : req.body.recordLocator || ''
 	    }
 	}, function (error, response, body) {
-
+		console.log(body);
 	    if (!error && response.statusCode === 200) {
 	    	
 	    	//console.log(body.data.pnrHeader.reservationInfo.reservation.controlNumber);

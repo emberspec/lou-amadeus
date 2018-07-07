@@ -53,10 +53,12 @@ app.use(function(err, req, res, next) {
 });
 
 
-const port       = 8080;
+//const port       = 8080;
+const port       = 80;
 
 app.listen(port, () => {
-	console.log("Link starto at 8080");
+	//console.log("Link starto at 8080");
+	console.log("Link start at 8080");
 })
 
 
