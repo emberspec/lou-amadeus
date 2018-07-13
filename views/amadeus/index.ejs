@@ -20,6 +20,7 @@
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" rel="stylesheet" />
     
+    <link href="../stylesheets/awesomplete.css" rel="stylesheet" />
     <link href="../assets/css/amadeus.css" rel="stylesheet" />
 </head>
 
@@ -145,18 +146,18 @@
                                 <h4 class="title">Search Flight</h4> 
                             </div>
                             <div class="card-content">
-                                <form id="frmAvailability">   
+                                <form id="frmAvailability" autocomplete="off">   
                                     <div class="col-md-12" style="padding-left: 5px !important">
                                         <div class="form-group label-floating is-empty">
                                             <label class="control-label">Origin</label>
-                                            <input type="text" id="txtOrigin" class="form-control txtField">
+                                            <input type="text" id="txtOrigin" pattern="[A-Za-z]{3}" class="form-control txtField">
                                             <p class='input-validation txtOriginErrorMessage'>*Origin is required</p>
                                         <span class="material-input"></span></div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group label-floating is-empty">
                                             <label class="control-label">Destination</label>
-                                            <input type="text" id="txtDestination" class="form-control txtField">
+                                            <input type="text" id="txtDestination" pattern="[A-Za-z]{3}" class="form-control txtField">
                                             <p class='input-validation txtDestinationErrorMessage'>*Destination is required</p>
                                         <span class="material-input"></span></div>
                                     </div>
@@ -337,12 +338,56 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
 
+<script src="../javascripts/awesomplete.min.js"></script>
+<script src="../javascripts/airports.js"></script>
 <script type="text/javascript">
 
 
-    
-
     $( document ).ready(function() {
+
+        
+        console.log(listOfAirports);
+        
+        new Awesomplete(document.getElementById("txtOrigin"), listOfAirports);
+
+        new Awesomplete(document.getElementById("txtDestination"), listOfAirports);
+
+        // function airportCode(codeToPass){
+        //     $.ajax({
+        //         url:"./airportCode",
+        //         type:"POST",
+        //         data:{
+        //             query : codeToPass
+        //         },
+        //         contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+        //         dataType:"json",
+        //         success: function(response, status){
+        //             var list = [];
+        //             var airportCodesCtr = 0;
+        //             for (airportCodesCtr = 0; airportCodesCtr < response.length; airportCodesCtr++) { 
+        //                 list[airportCodesCtr] = {
+        //                     'label' : response[airportCodesCtr].display_name,
+        //                     'value' : response[airportCodesCtr].code
+        //                 };
+                        
+        //             }
+        //             console.log(list);
+        //             new Awesomplete(document.getElementById("txtOrigin"), {list});
+
+
+  
+        //             airportCodesCtr = 0
+        //         }
+        //     });
+        // };
+        
+        
+
+        // $( "#txtOrigin" ).keyup(function() {
+        //     console.log($("#txtOrigin").val());
+        //     airportCode($("#txtOrigin").val());
+        // });
+        
 
         $('#txtDepartureDate').datepicker({
             format: 'yyyy-mm-dd',
@@ -367,6 +412,11 @@
         var flightID = 0;
         var dontDoubleClick = false;
         var dontDoubleClick2 = false;
+        var allowedPassenger = 0;
+        var minimumPassenger = 0
+        var arrayForPassengerLimit = [];
+        var ctrForPassengerLimit = 0;
+        var selectedModalID;
 
         function validator() {
 
@@ -390,6 +440,49 @@
 
             return toReturn;
         }
+
+        function isFlightSelected(flightElementClass) {
+            $("." + flightElementClass).click(function(){
+            selectedModalID = $(this).attr('id');
+            var showThisModal = true;
+            if($('.eachSegments').length != 0){
+                $('.eachSegments').each(function(i, obj) {
+                    
+                    var thisIdSegmentForChecking = $(this).attr("id").substring(11);
+                    if($(this).children('#get-segment-number' + thisIdSegmentForChecking).text() == selectedModalID.substring(3)){
+                        showThisModal = false;
+                    }
+
+                });
+
+                if(showThisModal){
+                    $('.modal' + selectedModalID.substring(3)).modal('show');
+                    showThisModal = true;
+                }else{
+                    alert("Class is already selected on this flight");
+                }
+            }else{
+                $('.modal' + selectedModalID.substring(3)).modal('show');
+            }
+            
+
+        });
+        }
+
+        
+
+        // function getAvailability(availability, flightNumber) {
+            
+        //     arrayForPassengerLimit[ctrForPassengerLimit] = {
+        //         'flight' : flightNumber,
+        //         'availability' : availability
+
+        //     };
+
+        //     ctrForPassengerLimit = ctrForPassengerLimit + 1;
+        //     allowedPassenger = allowedPassenger + parseInt(availability);
+        //     alert(arrayForPassengerLimit);
+        // }
 
         $('form').submit(function( event ) {
             var lasti = 0;
@@ -423,7 +516,7 @@
                                 colorType = "warning";
                             }
                             $('#showResults').append(
-                                '<div class="col-md-4 col-sm-6 col-xs-6 col-lg-2 flightsRslt" data-toggle="modal" data-target=".modal' + i + '" style="cursor: pointer">' +
+                                '<div class="col-md-4 col-sm-6 col-xs-6 col-lg-2 flightsRslt"  id="rsl' + flight.flightDetails.flightNumber + '"  style="cursor: pointer">' +
                                     '<div class="card alert alert-' + colorType + '">' +
                                         '<div class="col-md-6 text-center">' +
                                             '<h3>' + flight.flightDetails.departure.location + '</h3>' +
@@ -436,7 +529,7 @@
                                     '</div>' +
                                 '</div>' +
 
-                                '<div class="modal modal' + i + '" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabe' + i + '" >' +
+                                '<div class="modal modal' + flight.flightDetails.flightNumber + '" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabe' + i + '" >' +
                                     '<div class="modal-dialog modal-lg" role="document" style="margin-top: 15px !important;">' +
                                         '<div class="modal-content ">' +
                                             '<div class="col-md-12 col-sm-12 ">' +
@@ -486,11 +579,9 @@
                                         '</div>' +
                                     '</div>' +
                                 '</div>'
+                            );
 
                             
-                                
-                                
-                            );
                             
 
                             flight.classes.forEach(function(eachClass){
@@ -520,8 +611,11 @@
                 
                         });
 
+                        
+                        isFlightSelected('flightsRslt');
                 
                         $(".class-card-id").click(function(){
+
                             flightID = flightID + 1;
                             var toIdentify = $(this).children('.get-flight-number').text() + '(' + $(this).children('.flight-class').text().substring(7) + ')';
 
@@ -561,6 +655,10 @@
                                     '</div>'
                                     
                                 );
+
+                                $('.modal' + selectedModalID.substring(3)).modal('hide');
+
+                                // getAvailability($(this).children('.flight-availability').text().substring(14), $(this).children('.get-flight-number').text());
 
                                 $("#flightRmvBtn" + flightID).click(function(){
                                     var first_div = $(this).parent();
@@ -615,6 +713,8 @@
                                     
                                 }
                             }
+
+
                         });
 
                         
@@ -647,7 +747,7 @@
                                             colorType = "warning";
                                         }
                                         $('#showResultsRoundTrip').append(
-                                            '<div class="col-md-4 col-sm-6 col-xs-6 col-lg-2 flightsRslt" data-toggle="modal" data-target=".modal' + i + '" style="cursor: pointer">' +
+                                            '<div class="col-md-4 col-sm-6 col-xs-6 col-lg-2 flightsRslt classToLoopOnCheck" id="rsl' + flight.flightDetails.flightNumber + '"  style="cursor: pointer">' +
                                                 '<div class="card alert alert-' + colorType + '">' +
                                                     '<div class="col-md-6 text-center">' +
                                                         '<h3>' + flight.flightDetails.departure.location + '</h3>' +
@@ -660,7 +760,7 @@
                                                 '</div>' +
                                             '</div>' +
 
-                                            '<div class="modal modal' + i + '" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabe' + i + '" >' +
+                                            '<div class="modal modal' + flight.flightDetails.flightNumber + '" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabe' + i + '" >' +
                                                 '<div class="modal-dialog modal-lg" role="document" style="margin-top: 15px !important;">' +
                                                     '<div class="modal-content ">' +
                                                         '<div class="col-md-12 col-sm-12 ">' +
@@ -744,6 +844,8 @@
                             
                                     });
 
+                                    isFlightSelected('classToLoopOnCheck');
+
                             
                                     $(".class-card-idRounTrip").click(function(){
                                         flightID = flightID + 1;
@@ -785,6 +887,8 @@
                                                 '</div>'
                                                 
                                             );
+
+                                            $('.modal' + selectedModalID.substring(3)).modal('hide');
 
                                             $("#flightRmvBtn" + flightID).click(function(){
                                                 var first_div = $(this).parent();
@@ -1284,6 +1388,7 @@
                                                     eachItinerary = {};
                                                     references = [];
                                                     eachReferences = {};
+                                                    passengerLimit = 0;
                                                 }
 
                                             }

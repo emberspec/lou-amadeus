@@ -6,6 +6,24 @@ let contacts = [];
 let itineraries = [];
 let entry = {};
 
+router.post('/airportCode', (req, res, next) => {
+	request.post({
+	    url: 'http://esales.limcontravel.com/api/amadeus/airport/typehead',
+	    json: true,
+	    form: {
+	    	query: req.body.query || ''
+	    }
+	}, function (error, response, body) {
+		
+	    if (!error && response.statusCode === 200) {
+	    	console.log(body.data);
+	    	res.send(body.data);
+	    	
+	    }
+	});
+	
+});
+
 router.get('/availability', (req, res, next) => {
 	//console.log(localStorage.getItem('isLogin'));
 	if (localStorage.getItem('isLogin') === "true") {
