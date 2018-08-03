@@ -57,7 +57,7 @@
             </div>
         </div>
         <div class="main-panel">
-            
+
             <nav class="navbar navbar-transparent navbar-absolute">
                 <div class="container-fluid">
                     <div class="navbar-header">
@@ -108,9 +108,9 @@
                                 </a>
                             </li>
                         </ul>
-                        <form class="navbar-form navbar-right" role="search">
+                        <form class="navbar-form navbar-right" role="search" >
                             <div class="form-group  is-empty">
-                                <input type="text" class="form-control" placeholder="Search">
+                                <input type="text" class="form-control" placeholder="Search" >
                                 <span class="material-input"></span>
                             </div>
                             <button type="submit" class="btn btn-white btn-round btn-just-icon">
@@ -133,11 +133,11 @@
                                     <h4 class="title">Retrieve PNR</h4> 
                                 </div>
                                 <div class="card-content">
-                                    <form>   
+                                    <form autocomplete="off">   
                                         <div class="col-md-12" style="padding-left: 5px !important">
                                             <div class="form-group label-floating is-empty">
                                                 <label class="control-label">Record Locator</label>
-                                                <input type="text" id="txtRL" class="form-control">
+                                                <input type="text" id="txtRL" class="form-control" autocomplete="off">
                                             <span class="material-input"></span></div>
                                         </div>
                                         
@@ -177,7 +177,7 @@
                                     <h4 class="title">Passengers</h4>
                                 </div>
                                 <div class="card-content table-responsive">
-                                    <table class="table">
+                                    <table class="table tblData">
                                         <thead class="text-primary">
                                             <tr>  
                                                 <th>First Name</th>
@@ -201,7 +201,7 @@
                                     <h4 class="title">Segments</h4>
                                 </div>
                                 <div class="card-content table-responsive">
-                                    <table class="table">
+                                    <table class="table tblData">
                                         <thead class="text-primary">
                                             <tr>  
                                                 <th>Flight Number</th>
@@ -332,6 +332,9 @@
             event.preventDefault(); 
 
             if($("#txtRL").val() != ""){
+
+                $('.tblData tbody > tr').remove();
+
                 $.ajax({
                     url:"./record",
                     type:"POST",
@@ -347,6 +350,12 @@
 
                             if(typeof response.dataElementsMaster.dataElementsIndiv[7].serviceRequest.ssr.freeText != 'undefined'){
                                 var amount = response.dataElementsMaster.dataElementsIndiv[7].serviceRequest.ssr.freeText.substring(17);
+                                var strPHP = amount.substring(0,3);
+                                if(strPHP == "PHP"){
+                                    amount = response.dataElementsMaster.dataElementsIndiv[7].serviceRequest.ssr.freeText.substring(17);
+                                }else{
+                                    amount = "No Price";
+                                }
                             }else{
                                 var amount = "No Price";
                             }
