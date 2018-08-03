@@ -24,7 +24,9 @@
 </head>
 
 <body>
+
     <div class="wrapper">
+
         <div class="sidebar" data-color="blue" data-image="../assets/img/sidebar-1.jpg">
             <!--
             Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
@@ -55,6 +57,7 @@
             </div>
         </div>
         <div class="main-panel">
+            
             <nav class="navbar navbar-transparent navbar-absolute">
                 <div class="container-fluid">
                     <div class="navbar-header">
@@ -64,7 +67,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#"> Table List </a>
+                        <a class="navbar-brand" href="#"> PNR Records </a>
                     </div>
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
@@ -123,52 +126,101 @@
 
 
                     
-                    
-                    <div class="col-lg-2 col-md-12" id="rcdNumber">
-                        <div class="card">
-                            <div class="card-header" data-background-color="blue">
-                                <h4 class="title">Retrieve PNR</h4> 
+                    <div class="row">
+                        <div class="col-md-12 col-lg-6" id="rcdNumber">
+                            <div class="card">
+                                <div class="card-header" data-background-color="blue">
+                                    <h4 class="title">Retrieve PNR</h4> 
+                                </div>
+                                <div class="card-content">
+                                    <form>   
+                                        <div class="col-md-12" style="padding-left: 5px !important">
+                                            <div class="form-group label-floating is-empty">
+                                                <label class="control-label">Record Locator</label>
+                                                <input type="text" id="txtRL" class="form-control">
+                                            <span class="material-input"></span></div>
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-info pull-right">SEARCH</button>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                </div>
                             </div>
-                            <div class="card-content">
-                                <form>   
-                                    <div class="col-md-12" style="padding-left: 5px !important">
-                                        <div class="form-group label-floating is-empty">
-                                            <label class="control-label">Record Locator</label>
-                                            <input type="text" id="txtRL" class="form-control">
-                                        <span class="material-input"></span></div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-6 tblPnr" style="display:none;">
+                            <div class="col-md-9" style="margin:auto; float:none">
+                                <div class="card card-stats">
+                                    <div class="card-header" data-background-color="green">
+                                        <i class="material-icons">airplanemode_active</i>
                                     </div>
-                                    
-                                    <button type="submit" class="btn btn-info pull-right">SEARCH</button>
-                                    <div class="clearfix"></div>
-                                </form>
+                                    <div class="card-content">
+                                        <p class="category"><span id="insertPN"></span></p>
+                                        <h3 class="title"><span id="insertAmount"></span></h3>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="stats">
+                                            <i class="material-icons">home</i> Office ID : <span id="insertOfficeID"></span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
 
-                    <div class="col-md-12 col-lg-10" id="rcdResult">
-                        <div class="card" id="tblPnr" style="display:none;">
-                            <div class="card-header" data-background-color="blue">
-                                <h4 class="title">Record Number : <span id="insertPN"></span></h4>
-                            </div>
-                            <div class="card-content table-responsive">
-                                <table class="table">
-                                    <thead class="text-primary">
-                                        <tr>
-                                            <th>#</th>    
-                                            <th>Passenger</th>
-                                            <th>Departue Date</th>
-                                            <th>Office</th>
-                                            <th>Agent</th>
-                                            <th>Creation Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="showResults">
-                                        
-                                    </tbody>
-                                </table>
+
+                    <div class="row tblPnr" style="display:none;">
+                        <div class=" col-md-12 col-lg-6" id="rcdResult">
+                            <div class="card" >
+                                <div class="card-header" data-background-color="blue">
+                                    <h4 class="title">Passengers</h4>
+                                </div>
+                                <div class="card-content table-responsive">
+                                    <table class="table">
+                                        <thead class="text-primary">
+                                            <tr>  
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
+                                                <th>Gender</th>
+                                                <th>Type</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="showResults">
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
+                    
+
+                        <div class="col-md-12 col-lg-6" id="rcdSegments">
+                            <div class="card">
+                                <div class="card-header" data-background-color="blue">
+                                    <h4 class="title">Segments</h4>
+                                </div>
+                                <div class="card-content table-responsive">
+                                    <table class="table">
+                                        <thead class="text-primary">
+                                            <tr>  
+                                                <th>Flight Number</th>
+                                                <th>Origin</th>
+                                                <th>Destination</th>
+                                                <th>Daparture Date</th>
+                                                <th>Arrival Date</th>
+                                                <th>Flight Class</th>
+                                                <th>Company</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="showResultsSegments">
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
 
@@ -204,6 +256,77 @@
 
     $( document ).ready(function() {
 
+        function showNotif(from, align, color, message, icon) {
+
+            $.notify({
+                icon: icon,
+                message: message
+
+            }, {
+                type: color,
+                timer: 4000,
+                placement: {
+                    from: from,
+                    align: align
+                }
+            });
+        }
+
+        
+
+        function populatePax(paxType, paxName, surname){
+
+            if(typeof paxType == 'undefined'){
+                paxType = "INF";
+            }
+
+            if( paxType == "ADT") {
+                if(paxName.indexOf("MR") == -1){
+                    paxName = paxName.replace("MS", "");
+                    var paxGender = "Female";
+                }else{
+                    paxName = paxName.replace("MR", "");
+                    var paxGender = "Male";
+                }
+            }else{
+                if(paxName.indexOf("MSTR") == -1){
+                    paxName = paxName.replace("MISS", "");
+                    var paxGender = "Female";
+                }else{
+                    paxName = paxName.replace("MSTR", "");
+                    var paxGender = "Male";
+                }
+            }
+
+        
+            
+            $('#showResults').append(
+                '<tr class="eachPax">' +
+                    '<td>' + paxName +'</td>' +
+                    '<td>' + surname +'</td>' +
+                    '<td>' + paxGender + '</td>' +
+                    '<td>' + paxType + '</td>' +
+                '</tr>' 
+            );
+        }
+
+        function populateSegment(flightNumber, origin, destination, departureDate, departureTime, arrivalDate, arrivalTime, flightClass, company){
+            
+            $('#showResultsSegments').append(
+                '<tr class="eachPax">' +
+                    '<td>' + flightNumber +'</td>' +
+                    '<td>' + origin +'</td>' +
+                    '<td>' + destination +'</td>' +
+                    '<td>' + moment(departureDate, 'DDMMYY').format('MM-DD-YYYY') + ' ' + departureTime +'</td>' +
+                    '<td>' + moment(arrivalDate, 'DDMMYY').format('MM-DD-YYYY') + ' ' + arrivalTime +'</td>' +
+                    '<td>' + flightClass +'</td>' +
+                    '<td>' + company +'</td>' +
+                '</tr>' 
+            );
+
+        }
+        
+
         $('form').submit(function( event ) {
 
             event.preventDefault(); 
@@ -222,52 +345,88 @@
                             $('.eachSegment').remove();
                             $('#insertPN').text($("#txtRL").val())
 
-                            if(response.originDestinationDetails.itineraryInfo.length == undefined){
-                                var flight = response.originDestinationDetails.itineraryInfo;
-                                var originalDate = flight.travelProduct.product.depDate;
-                                var orginalDateOfCreation = response.securityInformation.secondRpInformation.creationDate;
-
-                                    $('#showResults').append(
-                                        '<tr class="eachSegment">' +
-                                            '<td>' + flight.elementManagementItinerary.reference.number + '</td>' +
-                                            '<td>' + response.travellerInfo.passengerData.travellerInformation.passenger.firstName + ' ' + response.travellerInfo.passengerData.travellerInformation.traveller.surname +'</td>' +
-                                            '<td>' + moment(originalDate, 'DDMMYY').format('YYYY-MM-DD') + '</td>' +
-                                            '<td>' + response.securityInformation.responsibilityInformation.officeId + '</td>' +
-                                            '<td>' + response.securityInformation.responsibilityInformation.agentId + '</td>' +
-                                            '<td>' + moment(orginalDateOfCreation, 'DDMMYY').format('YYYY-MM-DD') + '</td>' +
-                                        '</tr>' 
-                                    );
-
-                                
-                                $("#tblPnr").show();
-
-                                $("#txtRL").val('');
+                            if(typeof response.dataElementsMaster.dataElementsIndiv[7].serviceRequest.ssr.freeText != 'undefined'){
+                                var amount = response.dataElementsMaster.dataElementsIndiv[7].serviceRequest.ssr.freeText.substring(17);
                             }else{
-                                response.originDestinationDetails.itineraryInfo.forEach(function(flight){
-                                var originalDate = flight.travelProduct.product.depDate;
-                                var orginalDateOfCreation = response.securityInformation.secondRpInformation.creationDate;
-
-                                    $('#showResults').append(
-                                        '<tr class="eachSegment">' +
-                                            '<td>' + flight.elementManagementItinerary.reference.number + '</td>' +
-                                            '<td>' + response.travellerInfo.passengerData.travellerInformation.passenger.firstName + ' ' + response.travellerInfo.passengerData.travellerInformation.traveller.surname +'</td>' +
-                                            '<td>' + moment(originalDate, 'DDMMYY').format('YYYY-MM-DD') + '</td>' +
-                                            '<td>' + response.securityInformation.responsibilityInformation.officeId + '</td>' +
-                                            '<td>' + response.securityInformation.responsibilityInformation.agentId + '</td>' +
-                                            '<td>' + moment(orginalDateOfCreation, 'DDMMYY').format('YYYY-MM-DD') + '</td>' +
-                                        '</tr>' 
-                                    );
-                                });
-                                
-                                $("#tblPnr").show();
-
-                                $("#txtRL").val('');
+                                var amount = "No Price";
                             }
+
+                            $('#insertAmount').text(amount);
+                            $('#insertOfficeID').text(response.securityInformation.responsibilityInformation.officeId);
+                            
+
+                            if(typeof response.travellerInfo.length == 'undefined'){
+
+                                var paxType = response.travellerInfo.passengerData.travellerInformation.passenger.type;
+                                var paxName = response.travellerInfo.passengerData.travellerInformation.passenger.firstName;
+                                var paxSuname = response.travellerInfo.passengerData.travellerInformation.traveller.surname;
+
+                                populatePax(paxType, paxName, paxSuname);
+
+                            }else{
+
+                                response.travellerInfo.forEach(function(eachTraveler){
+
+                                    var paxType = eachTraveler.passengerData.travellerInformation.passenger.type;
+                                    var paxName = eachTraveler.passengerData.travellerInformation.passenger.firstName;
+                                    var paxSuname = eachTraveler.passengerData.travellerInformation.traveller.surname;
+
+                                    populatePax(paxType, paxName, paxSuname);
+
+                                    
+                                });
+
+                            }
+
+                            if(typeof response.originDestinationDetails.itineraryInfo.length == 'undefined'){
+
+                                var flightNumber = response.originDestinationDetails.itineraryInfo.travelProduct.productDetails.identification;
+                                var origin = response.originDestinationDetails.itineraryInfo.travelProduct.boardpointDetail.cityCode;
+                                var destination = response.originDestinationDetails.itineraryInfo.travelProduct.offpointDetail.cityCode;
+                                var departureDate = response.originDestinationDetails.itineraryInfo.travelProduct.product.depDate;
+                                var departureTime = response.originDestinationDetails.itineraryInfo.travelProduct.product.depTime.slice(0, 2) + ":" + response.originDestinationDetails.itineraryInfo.travelProduct.product.depTime.slice(2);
+                                var arrivalDate = response.originDestinationDetails.itineraryInfo.travelProduct.product.arrDate;
+                                var arrivalTime = response.originDestinationDetails.itineraryInfo.travelProduct.product.arrTime.slice(0, 2) + ":" + response.originDestinationDetails.itineraryInfo.travelProduct.product.arrTime.slice(2);
+                                var flightClass = response.originDestinationDetails.itineraryInfo.travelProduct.productDetails.classOfService;
+                                var company = response.originDestinationDetails.itineraryInfo.travelProduct.companyDetail.identification;
+
+                                populateSegment(flightNumber, origin, destination, departureDate, departureTime, arrivalDate, arrivalTime, flightClass, company);
+
+                            }else{
+
+                                response.originDestinationDetails.itineraryInfo.forEach(function(eachSegment){
+                                
+                                    var flightNumber = eachSegment.travelProduct.productDetails.identification;
+                                    var origin = eachSegment.travelProduct.boardpointDetail.cityCode;
+                                    var destination = eachSegment.travelProduct.offpointDetail.cityCode;
+                                    var departureDate = eachSegment.travelProduct.product.depDate;
+                                    var departureTime = eachSegment.travelProduct.product.depTime.slice(0, 2) + ":" + eachSegment.travelProduct.product.depTime.slice(2);
+                                    var arrivalDate = eachSegment.travelProduct.product.arrDate;
+                                    var arrivalTime = eachSegment.travelProduct.product.arrTime.slice(0, 2) + ":" + eachSegment.travelProduct.product.arrTime.slice(2);
+                                    var flightClass = eachSegment.travelProduct.productDetails.classOfService;
+                                    var company = eachSegment.travelProduct.companyDetail.identification;
+
+                                    populateSegment(flightNumber, origin, destination, departureDate, departureTime, arrivalDate, arrivalTime, flightClass, company);
+
+                                });
+
+                            }
+
+
+
+                            
+                            
+                            
+
+                            $(".tblPnr").show();
+
+                            $("#txtRL").val('');
+ 
                         }
                     }
                 })
             }else{
-                alert("Input record locator");
+                showNotif('top','right', 'danger', 'Input record locator', 'clear');
             }
 
             

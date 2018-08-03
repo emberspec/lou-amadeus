@@ -25,6 +25,7 @@
 </head>
 
 <body>
+    <div class="loading" style="display:none;">Loading&#8230;</div>
     <div class="wrapper">
         <div class="sidebar" data-color="blue" data-image="../assets/img/sidebar-1.jpg">
             <!--
@@ -165,7 +166,7 @@
                                         <div class="form-group label-floating is-empty">
                                             <label class="control-label">Departure Date</label>
                                             <input type="text" id="txtDepartureDate" class="form-control datepicker txtField" >
-                                            <p class='input-validation txtDepartureDateErrorMessage'>*First Name is required</p>
+                                            <p class='input-validation txtDepartureDateErrorMessage'>*Departure Date is required</p>
                                         <span class="material-input"></span></div>
                                     </div>
                                     <div class="col-md-12">
@@ -253,6 +254,26 @@
                                             <input type="text" id="txtEmail" class="mdltxts form-control txtpsnger">
                                         <span class="material-input"></span></div>
                                     </div>
+                                    <div class="col-xs-12 col-md-6" style="padding-left: 5px !important">
+                                        <div class="form-group label-floating is-empty">
+                                            <label class="control-label input-label-float">Passenger Type</label>
+                                            <select type="text" id="txtPType" class="mdltxts form-control txtpsnger">
+                                                <option value="ADT" selected>Aldult</option>
+                                                <option value="CHD">Child</option>
+                                                <option value="INF">Infant</option>
+                                            </select>
+                                        <span class="material-input"></span></div>
+                                    </div>
+                                    <div class="col-xs-12 col-md-6" style="padding-left: 5px !important">
+                                        <div class="form-group label-floating is-empty">
+                                            <label class="control-label input-label-float">Gender</label>
+                                            <select type="text" id="txtGender" class="mdltxts form-control txtpsnger">
+                                                <option value="male" selected>Male</option>
+                                                <option value="female">Female</option>
+                                            </select>
+                                        <span class="material-input"></span></div>
+                                    </div>
+
                                     
                                     
                                     <button type="submit" id="btnAddPassenger"  class="btn btn-success pull-right">Add Passenger</button>
@@ -301,6 +322,27 @@
                                             <input type="text" id="txtEditEmail" class="mdltxts form-control txtpsnger">
                                         <span class="material-input"></span></div>
                                     </div>
+
+                                    <div class="col-xs-12 col-md-6" style="padding-left: 5px !important">
+                                        <div class="form-group label-floating is-empty">
+                                            <label class="control-label input-label-float">Passenger Type</label>
+                                            <select type="text" id="txtEditPType" class="mdltxts form-control txtpsnger">
+                                                <option value="ADT" selected>Aldult</option>
+                                                <option value="CHD">Child</option>
+                                                <option value="INF">Infant</option>
+                                            </select>
+                                        <span class="material-input"></span></div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-md-6" style="padding-left: 5px !important">
+                                        <div class="form-group label-floating is-empty">
+                                            <label class="control-label input-label-float">Gender</label>
+                                            <select type="text" id="txtEditGender" class="mdltxts form-control txtpsnger">
+                                                <option value="male" selected>Male</option>
+                                                <option value="female">Female</option>
+                                            </select>
+                                        <span class="material-input"></span></div>
+                                    </div>
                                     
                                     <button type="submit" id="btnEdit"  class="btn btn-warning pull-right">Edit</button>
                                     <button type="submit" id="btnRemove"  class="btn btn-danger pull-right">Remove</button>
@@ -346,7 +388,23 @@
     $( document ).ready(function() {
 
         
-        console.log(listOfAirports);
+        //console.log(listOfAirports);
+
+        function showNotif(from, align, color, message, icon) {
+
+            $.notify({
+                icon: icon,
+                message: message
+
+            }, {
+                type: color,
+                timer: 4000,
+                placement: {
+                    from: from,
+                    align: align
+                }
+            });
+        }
         
         new Awesomplete(document.getElementById("txtOrigin"), listOfAirports);
 
@@ -418,6 +476,146 @@
         var ctrForPassengerLimit = 0;
         var selectedModalID;
 
+
+        function populatingFlightWithClasses(flight, counter, color, response, distinctClass) {
+
+            flight.classes.forEach(function(eachClass){
+                $('#eachClass' + counter).append(
+
+                        '<div class=" col-md-3 col-xs-6 text-center classes-card ">' +
+                            '<div class="alert alert-' + color + distinctClass + flight.lineItemNumber + eachClass.class +'" id="' + flight.flightDetails.flightNumber + eachClass.class + '">' +
+                                '<span class="get-flight-number" style="display:none;">' + flight.flightDetails.flightNumber + '</span>' +
+                                '<span class="get-flight-date" style="display:none;">' + flight.flightDetails.departure.date + '</span>' +
+                                '<span class="get-flight-departure" style="display:none;">' + flight.flightDetails.departure.location + '</span>' +
+                                '<span class="get-flight-arrival" style="display:none;">' + flight.flightDetails.arrival.location + '</span>' +
+                                '<span class="get-flight-time" style="display:none;">' + flight.flightDetails.departure.time + '</span>' +
+                                '<span class="get-flight-ITR-origin" style="display:none;">' + response.queryDetails.origin + '</span>' +
+                                '<span class="get-flight-ITR-destination" style="display:none;">' + response.queryDetails.destination + '</span>' +
+                                '<span class="get-flight-isConnecting" style="display:none;">' + flight.isConnecting + '</span>' +
+                                '<span class="get-flight-lineNumber" style="display:none;">' + flight.lineItemNumber + '</span>' +
+                                '<span class="get-elementclass-for-queue" style="display:none;">queue' + flight.lineItemNumber + eachClass.class +'</span>' +
+                                '<span class="get-carrierCode" style="display:none;">' + flight.flightDetails.carrierCode +'</span>' +
+                                '<h4 class="flight-class">Class: ' + eachClass.class + '</h4>' +
+                                '<h4 class="flight-availability">Availability: ' + eachClass.availableCount + '</h4>' +
+                            '</div>' +
+                        '</div>' 
+                );
+            });
+        }
+
+        function classIsClick(elementClassName, isConnectingFlight) {
+            $(elementClassName).click(function(){
+
+                flightID = flightID + 1;
+                var toIdentify = $(this).children('.get-flight-number').text() + '(' + $(this).children('.flight-class').text().substring(7) + ')';
+
+                var isRepeat = false;
+                $('.eachFlightIdentifier').each(function(i, obj) {
+
+                    if($(this).text() == toIdentify){
+                        showNotif('top','right', 'danger', 'Class is already selected', 'clear');
+                        isRepeat = true;
+                        return false;
+                    }
+                });
+
+
+                
+                if($(this).children('.flight-availability').text().substring(14) == 0){
+                    showNotif('top','right', 'danger', 'Class not available', 'clear');
+                }else{
+                    if(!isRepeat){
+
+                        $( ".btnBookSell1" ).show(); 
+                        
+                        $('#queue-banner').append(
+
+                            '<div class="col-md-4   eachFlight ' + $(this).children('.get-elementclass-for-queue').text() + '" id="flight'  + flightID + '">' +
+                                '<div class="alert text-center flight-queue eachSegments" id="thisSegment' + flightID + '" style="margin: auto; margin-top: 10px;"> ' +
+                                    '<button type="button" aria-hidden="true" class="close btnRemoveFlight" id="flightRmvBtn' + flightID + '" style="color:black">×<span style="display:none;">' + $(this).children('.get-flight-isConnecting').text() + $(this).children('.get-flight-number').text() + '</span></button>' +
+                                    '<br>' +
+                                    '<p class="queue-destination-text">' + $(this).children('.get-flight-departure').text() +' <i class="material-icons">airplanemode_active</i> ' + $(this).children('.get-flight-arrival').text() + '</p>' +
+                                    '<h3 class="queue-number-text eachFlightIdentifier">' + $(this).children('.get-flight-number').text() + '('+ $(this).children('.flight-class').text().substring(7) +')</h3>' +
+                                    '<span id="get-segment-number' + flightID + '" style="display:none;">' + $(this).children('.get-flight-number').text() + '</span>' +
+                                    '<span id="get-segment-date' + flightID + '" style="display:none;">' + $(this).children('.get-flight-date').text() + '</span>' +
+                                    '<span id="get-segment-departure' + flightID + '" style="display:none;">' + $(this).children('.get-flight-departure').text() + '</span>' +
+                                    '<span id="get-segment-arrival' + flightID + '" style="display:none;">' + $(this).children('.get-flight-arrival').text() + '</span>' +
+                                    '<span id="get-segment-class' + flightID + '" style="display:none;">' + $(this).children('.flight-class').text().substring(7) + '</span>' +
+                                    '<span id="get-segment-time' + flightID + '" style="display:none;">' + $(this).children('.get-flight-time').text() + '</span>' +
+                                    '<span id="get-flight-ITR-origin' + flightID + '" style="display:none;">' + $(this).children('.get-flight-ITR-origin').text() + '</span>' +
+                                    '<span id="get-flight-ITR-destination' + flightID + '" style="display:none;">' + $(this).children('.get-flight-ITR-destination').text() + '</span>' +
+                                    '<span class="get-availability-count" style="display:none;">' + $(this).children('.get-flight-number').text() + $(this).children('.flight-class').text().substring(7) + $(this).children('.flight-availability').text().substring(14) +'</span>' +
+                                    '<span id="get-flight-class-for-queue' + $(this).children('.get-flight-number').text() + '" style="display:none;">' + $(this).children('.get-elementclass-for-queue').text() + '</span>' +
+                                    '<span id="get-carrier-code' + flightID + '" style="display:none;">' + $(this).children('.get-carrierCode').text() + '</span>' +
+                                '</div>' +
+                            '</div>'
+                            
+                        );
+
+                        $('.modal' + selectedModalID.substring(3)).modal('hide');
+
+                        // getAvailability($(this).children('.flight-availability').text().substring(14), $(this).children('.get-flight-number').text());
+
+                        $("#flightRmvBtn" + flightID).click(function(){
+                            var first_div = $(this).parent();
+                            var main_div = $(first_div).parent();
+                            
+                            
+                            if($(this).text().substring(1, 5) == "true"){
+                                showNotif('top','right', 'warning', 'All connected flights are also removed', 'warning');
+
+                               
+                                var classToDelete = $("#get-flight-class-for-queue" + $(this).text().substring(5)).text();
+                                
+                                $("." + classToDelete).each(function(i, obj) {
+                                    $(this).remove();
+                                });
+                                
+                                if($('.eachFlight').length == 0){
+                                    $('.btnBookSell1').hide();    
+                                }
+                                
+                            }else{
+                                $(main_div).remove();
+                                if($('.eachFlight').length == 0){
+                                    $('.btnBookSell1').hide();
+                                }
+                            }
+                            
+
+                            
+                             
+                        });
+
+                        if($(this).children('.get-flight-isConnecting').text() == "true"){
+                            
+                            var connectingElementClass = isConnectingFlight + $(this).children('.get-flight-lineNumber').text() + $(this).children('.flight-class').text().substring(7);
+                            var cardClassID = $(this).attr('id');
+                            
+                            
+
+                            if(!dontDoubleClick){
+                                dontDoubleClick = true
+                                $('.' + connectingElementClass).each(function(i, obj) {
+                                    if($(this).attr('id') != cardClassID){
+                                        $(this).click();
+                                        showNotif('top','right', 'warning', 'All connected flights are added', 'warning');
+                                    }
+                                });
+                                dontDoubleClick = false;
+                            }
+                            
+                        }
+                    }
+
+                }
+                
+
+
+            });
+        }
+
+
         function validator() {
 
             var $form = $("#frmAvailability");
@@ -459,7 +657,7 @@
                     $('.modal' + selectedModalID.substring(3)).modal('show');
                     showThisModal = true;
                 }else{
-                    alert("Class is already selected on this flight");
+                    showNotif('top','right', 'danger', 'Class is already selected on this flight', 'clear');
                 }
             }else{
                 $('.modal' + selectedModalID.substring(3)).modal('show');
@@ -500,6 +698,8 @@
                     contentType:"application/x-www-form-urlencoded; charset=UTF-8",
                     dataType:"json",
                     success: function(response, status){
+                        $('#showResultsRoundTrip').empty();
+                        $('.tripLabels2').hide();
                         $('#showResults').empty();
                         $('#txtLegends').show();
                         $('.tripLabels1').show();
@@ -584,28 +784,7 @@
                             
                             
 
-                            flight.classes.forEach(function(eachClass){
-                                $('#eachClass' + i).append(
-
-                                        '<div class=" col-md-3 col-xs-6 text-center classes-card ">' +
-                                            '<div class="alert alert-' + colorType + ' class-card-id connectingID' + flight.lineItemNumber + eachClass.class +'" id="' + flight.flightDetails.flightNumber + eachClass.class + '">' +
-                                                '<span class="get-flight-number" style="display:none;">' + flight.flightDetails.flightNumber + '</span>' +
-                                                '<span class="get-flight-date" style="display:none;">' + flight.flightDetails.departure.date + '</span>' +
-                                                '<span class="get-flight-departure" style="display:none;">' + flight.flightDetails.departure.location + '</span>' +
-                                                '<span class="get-flight-arrival" style="display:none;">' + flight.flightDetails.arrival.location + '</span>' +
-                                                '<span class="get-flight-time" style="display:none;">' + flight.flightDetails.departure.time + '</span>' +
-                                                '<span class="get-flight-ITR-origin" style="display:none;">' + response.queryDetails.origin + '</span>' +
-                                                '<span class="get-flight-ITR-destination" style="display:none;">' + response.queryDetails.destination + '</span>' +
-                                                '<span class="get-flight-isConnecting" style="display:none;">' + flight.isConnecting + '</span>' +
-                                                '<span class="get-flight-lineNumber" style="display:none;">' + flight.lineItemNumber + '</span>' +
-                                                '<span class="get-elementclass-for-queue" style="display:none;">queue' + flight.lineItemNumber + eachClass.class +'</span>' +
-                                                '<h4 class="flight-class">Class: ' + eachClass.class + '</h4>' +
-                                                '<h4 class="flight-availability">Availability: ' + eachClass.availableCount + '</h4>' +
-                                            '</div>' +
-                                        '</div>' 
-                                    
-                                );
-                            });
+                            populatingFlightWithClasses(flight, i, colorType, response, " class-card-id connectingID");
                             
 
                 
@@ -614,110 +793,8 @@
                         
                         isFlightSelected('flightsRslt');
                 
-                        $(".class-card-id").click(function(){
+                        classIsClick(".class-card-id", "connectingID");
 
-                            flightID = flightID + 1;
-                            var toIdentify = $(this).children('.get-flight-number').text() + '(' + $(this).children('.flight-class').text().substring(7) + ')';
-
-                            var isRepeat = false;
-                            $('.eachFlightIdentifier').each(function(i, obj) {
-
-                                if($(this).text() == toIdentify){
-                                    alert('Class is already selected');
-                                    isRepeat = true;
-                                    return false;
-                                }
-                            });
-
-                            if(!isRepeat){
-
-                                $( ".btnBookSell1" ).show(); 
-                                
-                                $('#queue-banner').append(
-
-                                    '<div class="col-md-4   eachFlight ' + $(this).children('.get-elementclass-for-queue').text() + '" id="flight'  + flightID + '">' +
-                                        '<div class="alert text-center flight-queue eachSegments" id="thisSegment' + flightID + '" style="margin: auto; margin-top: 10px;"> ' +
-                                            '<button type="button" aria-hidden="true" class="close btnRemoveFlight" id="flightRmvBtn' + flightID + '" style="color:black">×<span style="display:none;">' + $(this).children('.get-flight-isConnecting').text() + $(this).children('.get-flight-number').text() + '</span></button>' +
-                                            '<br>' +
-                                            '<p class="queue-destination-text">' + $(this).children('.get-flight-departure').text() +' <i class="material-icons">airplanemode_active</i> ' + $(this).children('.get-flight-arrival').text() + '</p>' +
-                                            '<h3 class="queue-number-text eachFlightIdentifier">' + $(this).children('.get-flight-number').text() + '('+ $(this).children('.flight-class').text().substring(7) +')</h3>' +
-                                            '<span id="get-segment-number' + flightID + '" style="display:none;">' + $(this).children('.get-flight-number').text() + '</span>' +
-                                            '<span id="get-segment-date' + flightID + '" style="display:none;">' + $(this).children('.get-flight-date').text() + '</span>' +
-                                            '<span id="get-segment-departure' + flightID + '" style="display:none;">' + $(this).children('.get-flight-departure').text() + '</span>' +
-                                            '<span id="get-segment-arrival' + flightID + '" style="display:none;">' + $(this).children('.get-flight-arrival').text() + '</span>' +
-                                            '<span id="get-segment-class' + flightID + '" style="display:none;">' + $(this).children('.flight-class').text().substring(7) + '</span>' +
-                                            '<span id="get-segment-time' + flightID + '" style="display:none;">' + $(this).children('.get-flight-time').text() + '</span>' +
-                                            '<span id="get-flight-ITR-origin' + flightID + '" style="display:none;">' + $(this).children('.get-flight-ITR-origin').text() + '</span>' +
-                                            '<span id="get-flight-ITR-destination' + flightID + '" style="display:none;">' + $(this).children('.get-flight-ITR-destination').text() + '</span>' +
-                                            '<span class="get-availability-count" style="display:none;">' + $(this).children('.get-flight-number').text() + $(this).children('.flight-class').text().substring(7) + $(this).children('.flight-availability').text().substring(14) +'</span>' +
-                                            '<span id="get-flight-class-for-queue' + $(this).children('.get-flight-number').text() + '" style="display:none;">' + $(this).children('.get-elementclass-for-queue').text() + '</span>' +
-                                        '</div>' +
-                                    '</div>'
-                                    
-                                );
-
-                                $('.modal' + selectedModalID.substring(3)).modal('hide');
-
-                                // getAvailability($(this).children('.flight-availability').text().substring(14), $(this).children('.get-flight-number').text());
-
-                                $("#flightRmvBtn" + flightID).click(function(){
-                                    var first_div = $(this).parent();
-                                    var main_div = $(first_div).parent();
-                                    
-                                    var confirmation = confirm("Delete this flight?");
-                                   
-
-                                    if(confirmation){
-                                        if($(this).text().substring(1, 5) == "true"){
-                                            alert("All connected flights are also removed");
-                                           
-                                            var classToDelete = $("#get-flight-class-for-queue" + $(this).text().substring(5)).text();
-                                            
-                                            $("." + classToDelete).each(function(i, obj) {
-                                                $(this).remove();
-                                            });
-                                            
-                                            if($('.eachFlight').length == 0){
-                                                $('.btnBookSell1').hide();    
-                                            }
-                                            
-                                        }else{
-                                            $(main_div).remove();
-                                            if($('.eachFlight').length == 0){
-                                                $('.btnBookSell1').hide();
-                                            }
-                                        }
-                                    }
-
-                                    
-                                     
-                                });
-
-                                if($(this).children('.get-flight-isConnecting').text() == "true"){
-                                    
-                                    var connectingElementClass = "connectingID" + $(this).children('.get-flight-lineNumber').text() + $(this).children('.flight-class').text().substring(7);
-                                    var cardClassID = $(this).attr('id');
-                                    
-                                    
-
-                                    if(!dontDoubleClick){
-                                        dontDoubleClick = true
-                                        $('.' + connectingElementClass).each(function(i, obj) {
-                                            if($(this).attr('id') != cardClassID){
-                                                $(this).click();
-                                                alert('This flight is a connecting flight. All connected flights with this schedule are added.');
-                                            }
-                                        });
-                                        dontDoubleClick = false;
-                                    }
-                                    
-                                }
-                            }
-
-
-                        });
-
-                        
                         if($('#txtArrivalDate').val() != ""){
                             
                             $.ajax({
@@ -817,133 +894,112 @@
                                         );
                                         
 
-                                        flight.classes.forEach(function(eachClass){
-                                            $('#eachClass' + i).append(
-
-                                                    '<div class=" col-md-3 col-xs-6 text-center classes-card ">' +
-                                                        '<div class="alert alert-' + colorType + ' class-card-idRounTrip connectingIDRT' + flight.lineItemNumber + eachClass.class +'" id="' + flight.flightDetails.flightNumber + eachClass.class + '">' +
-                                                            '<span class="get-flight-number" style="display:none;">' + flight.flightDetails.flightNumber + '</span>' +
-                                                            '<span class="get-flight-date" style="display:none;">' + flight.flightDetails.departure.date + '</span>' +
-                                                            '<span class="get-flight-departure" style="display:none;">' + flight.flightDetails.departure.location + '</span>' +
-                                                            '<span class="get-flight-arrival" style="display:none;">' + flight.flightDetails.arrival.location + '</span>' +
-                                                            '<span class="get-flight-time" style="display:none;">' + flight.flightDetails.departure.time + '</span>' +
-                                                            '<span class="get-flight-ITR-origin" style="display:none;">' + response.queryDetails.origin + '</span>' +
-                                                            '<span class="get-flight-ITR-destination" style="display:none;">' + response.queryDetails.destination + '</span>' +
-                                                            '<span class="get-flight-isConnecting" style="display:none;">' + flight.isConnecting + '</span>' +
-                                                            '<span class="get-flight-lineNumber" style="display:none;">' + flight.lineItemNumber + '</span>' +
-                                                            '<span class="get-elementclass-for-queue" style="display:none;">queue' + flight.lineItemNumber + eachClass.class +'</span>' +
-                                                            '<h4 class="flight-class">Class: ' + eachClass.class + '</h4>' +
-                                                            '<h4 class="flight-availability">Availability: ' + eachClass.availableCount + '</h4>' +
-                                                        '</div>' +
-                                                    '</div>' 
-                                                
-                                            );
-                                        });
-                                        
+                                        populatingFlightWithClasses(flight, i, colorType, response, " class-card-idRounTrip connectingIDRT");
+                                                                                
 
                             
                                     });
 
                                     isFlightSelected('classToLoopOnCheck');
 
-                            
-                                    $(".class-card-idRounTrip").click(function(){
-                                        flightID = flightID + 1;
-                                        var toIdentify = $(this).children('.get-flight-number').text() + '(' + $(this).children('.flight-class').text().substring(7) + ')';
+                                    classIsClick(".class-card-idRounTrip", "connectingIDRT");
+                                    // $(".class-card-idRounTrip").click(function(){
+                                    //     flightID = flightID + 1;
+                                    //     var toIdentify = $(this).children('.get-flight-number').text() + '(' + $(this).children('.flight-class').text().substring(7) + ')';
 
-                                        var isRepeat = false;
-                                        $('.eachFlightIdentifier').each(function(i, obj) {
+                                    //     var isRepeat = false;
+                                    //     $('.eachFlightIdentifier').each(function(i, obj) {
 
-                                            if($(this).text() == toIdentify){
-                                                alert('Class is already selected');
-                                                isRepeat = true;
-                                                return false;
-                                            }
-                                        });
+                                    //         if($(this).text() == toIdentify){
+                                    //             alert('Class is already selected');
+                                    //             isRepeat = true;
+                                    //             return false;
+                                    //         }
+                                    //     });
 
-                                        if(!isRepeat){
+                                    //     if(!isRepeat){
 
-                                            $( ".btnBookSell1" ).show(); 
+                                    //         $( ".btnBookSell1" ).show(); 
                                             
-                                            $('#queue-banner').append(
+                                    //         $('#queue-banner').append(
 
-                                                '<div class="col-md-4   eachFlight ' + $(this).children('.get-elementclass-for-queue').text() + '" id="flight'  + flightID + '">' +
-                                                    '<div class="alert text-center flight-queue eachSegments" id="thisSegment' + flightID + '" style="margin: auto; margin-top: 10px;"> ' +
-                                                        '<button type="button" aria-hidden="true" class="close btnRemoveFlight" id="flightRmvBtn' + flightID + '" style="color:black">×<span style="display:none;">' + $(this).children('.get-flight-isConnecting').text() + $(this).children('.get-flight-number').text() + '</span></button>' +
-                                                        '<br>' +
-                                                        '<p class="queue-destination-text">' + $(this).children('.get-flight-departure').text() +' <i class="material-icons">airplanemode_active</i> ' + $(this).children('.get-flight-arrival').text() + '</p>' +
-                                                        '<h3 class="queue-number-text eachFlightIdentifier">' + $(this).children('.get-flight-number').text() + '('+ $(this).children('.flight-class').text().substring(7) +')</h3>' +
-                                                        '<span id="get-segment-number' + flightID + '" style="display:none;">' + $(this).children('.get-flight-number').text() + '</span>' +
-                                                        '<span id="get-segment-date' + flightID + '" style="display:none;">' + $(this).children('.get-flight-date').text() + '</span>' +
-                                                        '<span id="get-segment-departure' + flightID + '" style="display:none;">' + $(this).children('.get-flight-departure').text() + '</span>' +
-                                                        '<span id="get-segment-arrival' + flightID + '" style="display:none;">' + $(this).children('.get-flight-arrival').text() + '</span>' +
-                                                        '<span id="get-segment-class' + flightID + '" style="display:none;">' + $(this).children('.flight-class').text().substring(7) + '</span>' +
-                                                        '<span id="get-segment-time' + flightID + '" style="display:none;">' + $(this).children('.get-flight-time').text() + '</span>' +
-                                                        '<span id="get-flight-ITR-origin' + flightID + '" style="display:none;">' + $(this).children('.get-flight-ITR-origin').text() + '</span>' +
-                                                        '<span id="get-flight-ITR-destination' + flightID + '" style="display:none;">' + $(this).children('.get-flight-ITR-destination').text() + '</span>' +
-                                                        '<span class="get-availability-count" style="display:none;">' + $(this).children('.get-flight-number').text() + $(this).children('.flight-class').text().substring(7) + $(this).children('.flight-availability').text().substring(14) +'</span>' +
-                                                        '<span id="get-flight-class-for-queue' + $(this).children('.get-flight-number').text() + '" style="display:none;">' + $(this).children('.get-elementclass-for-queue').text() + '</span>' +
-                                                    '</div>' +
-                                                '</div>'
+                                    //             '<div class="col-md-4   eachFlight ' + $(this).children('.get-elementclass-for-queue').text() + '" id="flight'  + flightID + '">' +
+                                    //                 '<div class="alert text-center flight-queue eachSegments" id="thisSegment' + flightID + '" style="margin: auto; margin-top: 10px;"> ' +
+                                    //                     '<button type="button" aria-hidden="true" class="close btnRemoveFlight" id="flightRmvBtn' + flightID + '" style="color:black">×<span style="display:none;">' + $(this).children('.get-flight-isConnecting').text() + $(this).children('.get-flight-number').text() + '</span></button>' +
+                                    //                     '<br>' +
+                                    //                     '<p class="queue-destination-text">' + $(this).children('.get-flight-departure').text() +' <i class="material-icons">airplanemode_active</i> ' + $(this).children('.get-flight-arrival').text() + '</p>' +
+                                    //                     '<h3 class="queue-number-text eachFlightIdentifier">' + $(this).children('.get-flight-number').text() + '('+ $(this).children('.flight-class').text().substring(7) +')</h3>' +
+                                    //                     '<span id="get-segment-number' + flightID + '" style="display:none;">' + $(this).children('.get-flight-number').text() + '</span>' +
+                                    //                     '<span id="get-segment-date' + flightID + '" style="display:none;">' + $(this).children('.get-flight-date').text() + '</span>' +
+                                    //                     '<span id="get-segment-departure' + flightID + '" style="display:none;">' + $(this).children('.get-flight-departure').text() + '</span>' +
+                                    //                     '<span id="get-segment-arrival' + flightID + '" style="display:none;">' + $(this).children('.get-flight-arrival').text() + '</span>' +
+                                    //                     '<span id="get-segment-class' + flightID + '" style="display:none;">' + $(this).children('.flight-class').text().substring(7) + '</span>' +
+                                    //                     '<span id="get-segment-time' + flightID + '" style="display:none;">' + $(this).children('.get-flight-time').text() + '</span>' +
+                                    //                     '<span id="get-flight-ITR-origin' + flightID + '" style="display:none;">' + $(this).children('.get-flight-ITR-origin').text() + '</span>' +
+                                    //                     '<span id="get-flight-ITR-destination' + flightID + '" style="display:none;">' + $(this).children('.get-flight-ITR-destination').text() + '</span>' +
+                                    //                     '<span class="get-availability-count" style="display:none;">' + $(this).children('.get-flight-number').text() + $(this).children('.flight-class').text().substring(7) + $(this).children('.flight-availability').text().substring(14) +'</span>' +
+                                    //                     '<span id="get-flight-class-for-queue' + $(this).children('.get-flight-number').text() + '" style="display:none;">' + $(this).children('.get-elementclass-for-queue').text() + '</span>' +
+                                    //                 '</div>' +
+                                    //             '</div>'
                                                 
-                                            );
+                                    //         );
 
-                                            $('.modal' + selectedModalID.substring(3)).modal('hide');
+                                    //         $('.modal' + selectedModalID.substring(3)).modal('hide');
 
-                                            $("#flightRmvBtn" + flightID).click(function(){
-                                                var first_div = $(this).parent();
-                                                var main_div = $(first_div).parent();
+                                    //         $("#flightRmvBtn" + flightID).click(function(){
+                                    //             var first_div = $(this).parent();
+                                    //             var main_div = $(first_div).parent();
                                                 
-                                                var confirmation = confirm("Delete this flight?");
+                                    //             var confirmation = confirm("Delete this flight?");
                                                
 
-                                                if(confirmation){
-                                                    if($(this).text().substring(1, 5) == "true"){
-                                                        alert("All connected flights are also removed");
+                                    //             if(confirmation){
+                                    //                 if($(this).text().substring(1, 5) == "true"){
+                                    //                     alert("All connected flights are also removed");
                                                        
-                                                        var classToDelete = $("#get-flight-class-for-queue" + $(this).text().substring(5)).text();
+                                    //                     var classToDelete = $("#get-flight-class-for-queue" + $(this).text().substring(5)).text();
                                                         
-                                                        $("." + classToDelete).each(function(i, obj) {
-                                                            $(this).remove();
-                                                        });
+                                    //                     $("." + classToDelete).each(function(i, obj) {
+                                    //                         $(this).remove();
+                                    //                     });
                                                         
-                                                        if($('.eachFlight').length == 0){
-                                                            $('.btnBookSell1').hide();    
-                                                        }
+                                    //                     if($('.eachFlight').length == 0){
+                                    //                         $('.btnBookSell1').hide();    
+                                    //                     }
                                                         
-                                                    }else{
-                                                        $(main_div).remove();
-                                                        if($('.eachFlight').length == 0){
-                                                            $('.btnBookSell1').hide();
-                                                        }
-                                                    }
-                                                }
+                                    //                 }else{
+                                    //                     $(main_div).remove();
+                                    //                     if($('.eachFlight').length == 0){
+                                    //                         $('.btnBookSell1').hide();
+                                    //                     }
+                                    //                 }
+                                    //             }
 
                                                 
                                                  
-                                            });
+                                    //         });
 
-                                            if($(this).children('.get-flight-isConnecting').text() == "true"){
+                                    //         if($(this).children('.get-flight-isConnecting').text() == "true"){
                                                 
-                                                var connectingElementClass = "connectingIDRT" + $(this).children('.get-flight-lineNumber').text() + $(this).children('.flight-class').text().substring(7);
-                                                var cardClassID = $(this).attr('id');
+                                    //             var connectingElementClass = "connectingIDRT" + $(this).children('.get-flight-lineNumber').text() + $(this).children('.flight-class').text().substring(7);
+                                    //             var cardClassID = $(this).attr('id');
                                                 
                                                 
 
-                                                if(!dontDoubleClick2){
-                                                    dontDoubleClick2 = true
-                                                    $('.' + connectingElementClass).each(function(i, obj) {
-                                                        if($(this).attr('id') != cardClassID){
-                                                            $(this).click();
-                                                            alert('This flight is a connecting flight. All connected flights with this schedule are added.');
-                                                        }
-                                                    });
-                                                    dontDoubleClick2 = false;
-                                                }
+                                    //             if(!dontDoubleClick2){
+                                    //                 dontDoubleClick2 = true
+                                    //                 $('.' + connectingElementClass).each(function(i, obj) {
+                                    //                     if($(this).attr('id') != cardClassID){
+                                    //                         $(this).click();
+                                    //                         alert('This flight is a connecting flight. All connected flights with this schedule are added.');
+                                    //                     }
+                                    //                 });
+                                    //                 dontDoubleClick2 = false;
+                                    //             }
                                                 
-                                            }
-                                        }
-                                    });
+                                    //         }
+                                    //     }
+                                    // });
 
                                 }
                             })
@@ -981,18 +1037,28 @@
         });
 
         $("#btnEdit").click(function(){
-                    
-            var thisId = $('#paxId').html().substring(9);
             
-            
-            $('#getShowedName' + thisId).text($('#txtEditFname').val() + ' ' + $('#txtEditLname').val());
-            $('#getFname' + thisId).text($('#txtEditFname').val()); 
-            $('#getLname' + thisId).text($('#txtEditLname').val()); 
-            $('#getMnumber' + thisId).text($('#txtEditMnumber').val()); 
-            $('#getEmail' + thisId).text($('#txtEditEmail').val());   
+            if($('#txtEditFname').val() == "" || $('#txtEditLname').val() == "" || $('#txtEditPType').val() == null) {
+                showNotif('top','right', 'danger', 'First Name, Last Name, Passenger Type and one of the Contact Fields are required.', 'clear');
+            }else if($('#txtEditMnumber').val() != "" || $('#txtEditEmail').val() != ""){
 
-            $('.frmAddPax').show();
-            $('.frmEditPax').hide();
+                var thisId = $('#paxId').html().substring(9);
+                
+
+                
+                $('#getShowedName' + thisId).text($('#txtEditFname').val() + ' ' + $('#txtEditLname').val());
+                $('#getFname' + thisId).text($('#txtEditFname').val()); 
+                $('#getLname' + thisId).text($('#txtEditLname').val()); 
+                $('#getMnumber' + thisId).text($('#txtEditMnumber').val()); 
+                $('#getEmail' + thisId).text($('#txtEditEmail').val());
+                $('#getPType' + thisId).text($('#txtEditPType').val());
+                $('#getGender' + thisId).text($('#txtEditGender').val());   
+
+                $('.frmAddPax').show();
+                $('.frmEditPax').hide();
+            }else{
+                showNotif('top','right', 'danger', 'First Name, Last Name, Passenger Type and one of the Contact Fields are required.', 'clear');
+            }
         });
 
         $("#btnAddPassenger").click(function(){
@@ -1006,9 +1072,9 @@
                 
                 
                 if(passengerLimit == 9) {
-                    alert('Error: Cannot add another passenger');
-                }else if($('#txtFname').val() == "a" || $('#txtLname').val() == "a") {
-                    alert('First Name, Last Name and one of the contact fields are required.');
+                    showNotif('top','right', 'danger', 'Cannot add another passenger. Passenger limit reach.', 'clear');
+                }else if($('#txtFname').val() == "" || $('#txtLname').val() == "" || $('#txtPType').val() == null || $('#txtGender').val() == null) {
+                    showNotif('top','right', 'danger', 'First Name, Last Name, Passenger Type and one of the Contact Fields are required.', 'clear');
                 }else if($('#txtMnumber').val() != "" || $('#txtEmail').val() != ""){
                     $('#lblPassengers').show();
                     passengerID = passengerID + 1;
@@ -1020,6 +1086,8 @@
                             '<span id="getLname' + passengerID + '" style="display:none;">' + $('#txtLname').val() + '</span>' +
                             '<span id="getMnumber' + passengerID + '" style="display:none;">' + $('#txtMnumber').val() + '</span>' +
                             '<span id="getEmail' + passengerID + '" style="display:none;">' + $('#txtEmail').val() + '</span>' +
+                            '<span id="getPType' + passengerID + '" style="display:none;">' + $('#txtPType').val() + '</span>' +
+                            '<span id="getGender' + passengerID + '" style="display:none;">' + $('#txtGender').val() + '</span>' +
                         '</div>'
                     );
                     $('.txtpsnger').val('');
@@ -1033,6 +1101,9 @@
                         $('#txtEditLname').val($(this).children('#getLname' + thisId).text());  
                         $('#txtEditMnumber').val($(this).children('#getMnumber' + thisId).text());
                         $('#txtEditEmail').val($(this).children('#getEmail' + thisId).text());
+                        $('#txtEditPType').val($(this).children('#getPType' + thisId).text());
+                        $('#txtEditGender').val($(this).children('#getGender' + thisId).text());
+
 
 
                         $('.frmEditPax').show();
@@ -1040,7 +1111,7 @@
                         
                     });
                 }else{
-                    alert('First Name, Last Name and one of the contact fields are required.');
+                    showNotif('top','right', 'danger', 'First Name, Last Name, Passenger Type and one of the Contact Fields are required.', 'clear');
                 }
 
                 
@@ -1083,7 +1154,7 @@
         });
 
         $('#btnSubmitPassenger').click(function(){
-
+            $('.loading').show();
 
             var passengers = [];
             var contacts = [];
@@ -1105,7 +1176,11 @@
 
                     "firstName": $(this).children('#getFname' + thisId).text(), 
 
-                    "lastName": $(this).children('#getLname' + thisId).text()
+                    "lastName": $(this).children('#getLname' + thisId).text(),
+
+                    "gender": $(this).children('#getGender' + thisId).text(),
+
+                    "travellerType": $(this).children('#getPType' + thisId).text()
 
                 };
 
@@ -1185,7 +1260,7 @@
 
                     "bookingClass": $(this).children('#get-segment-class' + thisIdSegment).text(), 
 
-                    "company": "5J"
+                    "company": $(this).children('#get-carrier-code' + thisIdSegment).text()
 
                 }
 
@@ -1338,7 +1413,7 @@
             // console.log(arrayOfItinerary);
             // console.log(passengers);
             // console.log(contacts);
-            console.log(itineraries);
+            //console.log(itineraries);
             $.ajax({
                 url:"./segments",
                 type:"POST",
@@ -1368,8 +1443,10 @@
                                         contentType:"application/x-www-form-urlencoded; charset=UTF-8",
                                         statusCode: {
                                             200: function (response) {
+                                                $('.loading').hide();
                                                 var responseType = response.substring(0, 5);
-                                                alert(response);
+                                                var successMsg = "Successfully book. Record Locator : " + response;
+                                                showNotif('top','right', 'success', successMsg, 'clear');
                                                 if(responseType == "Error" ){
                                                 }else{
                                                     $('.eachFlight').remove();

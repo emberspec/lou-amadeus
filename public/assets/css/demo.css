@@ -16,9 +16,8 @@
         bottom: 10px;
     }
 
-    #rcdNumber {
-        width: 100%;
-    }
+
+
 }
 
 #map {
@@ -112,22 +111,16 @@
 @media (min-width: 1200px) {
 
 
-    #rcdResult {
-        width: 100%;
-    }
+
 
     
 }
 
 @media (min-width: 1500px) {
-    #rcdNumber {
-        width: 20%;
-    }
 
 
-    #rcdResult {
-        width: 80% !important;
-    }
+
+
 
 
 }

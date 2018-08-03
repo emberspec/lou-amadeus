@@ -47,7 +47,7 @@ router.post('/availability', (req, res, next) => {
 	}, function (error, response, body) {
 		
 	    if (!error && response.statusCode === 200) {
-	    	//console.log(body.data);
+	    	console.log(body.data);
 	    	res.send(body.data);
 	    	
 	    }
@@ -103,7 +103,7 @@ router.post('/contacts', (req, res, next) => {
 	    	entry : entry
 	    }
 	}, function (error, response, body) {
-		
+			console.log(body);
 	    if (!error && response.statusCode === 200) {
 	    	console.log(body.data);
 	    	console.log(body.status);
