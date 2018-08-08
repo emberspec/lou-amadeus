@@ -347,7 +347,6 @@
                         200: function (response) {
                             $('.eachSegment').remove();
                             $('#insertPN').text($("#txtRL").val())
-
                             if(typeof response.dataElementsMaster.dataElementsIndiv[7].serviceRequest.ssr.freeText != 'undefined'){
                                 var amount = response.dataElementsMaster.dataElementsIndiv[7].serviceRequest.ssr.freeText.substring(17);
                                 var strPHP = amount.substring(0,3);
@@ -363,7 +362,7 @@
                             $('#insertAmount').text(amount);
                             $('#insertOfficeID').text(response.securityInformation.responsibilityInformation.officeId);
                             
-
+                            //indexOF lou ard hinumdumi
                             if(typeof response.travellerInfo.length == 'undefined'){
 
                                 var paxType = response.travellerInfo.passengerData.travellerInformation.passenger.type;

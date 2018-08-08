@@ -24,7 +24,7 @@
     <link href="../assets/css/amadeus.css" rel="stylesheet" />
 </head>
 
-<body>
+<body >
     <div class="loading" style="display:none;">Loading&#8230;</div>
     <div class="wrapper">
         <div class="sidebar" data-color="blue" data-image="../assets/img/sidebar-1.jpg">
@@ -56,7 +56,7 @@
                 </ul>
             </div>
         </div>
-        <div class="main-panel">
+        <div class="main-panel ">
             <nav class="navbar navbar-transparent navbar-absolute">
                 <div class="container-fluid">
                     <div class="navbar-header">
@@ -387,6 +387,18 @@
 
     $( document ).ready(function() {
 
+
+        $(window).on('shown.bs.modal', function() { 
+            $('.sidebar .sidebar-wrapper, .main-panel'). perfectScrollbar('destroy');
+            $('.modal').perfectScrollbar();
+            $('.modal').addClass('perfect-scrollbar-on');
+        });
+
+        $(window).on('hidden.bs.modal', function () {
+            $('.sidebar .sidebar-wrapper, .main-panel'). perfectScrollbar();
+            $('.modal').perfectScrollbar('destroy');
+            $('.modal').removeClass('perfect-scrollbar-on');
+        })
         
         //console.log(listOfAirports);
 
@@ -1446,7 +1458,7 @@
                                                 $('.loading').hide();
                                                 var responseType = response.substring(0, 5);
                                                 var successMsg = "Successfully book. Record Locator : " + response;
-                                                showNotif('top','right', 'success', successMsg, 'clear');
+                                                showNotif('top','right', 'success', successMsg, 'check');
                                                 if(responseType == "Error" ){
                                                 }else{
                                                     $('.eachFlight').remove();
