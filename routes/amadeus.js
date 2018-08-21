@@ -50,6 +50,8 @@ router.post('/availability', (req, res, next) => {
 	    	console.log(body.data);
 	    	res.send(body.data);
 	    	
+	    }else{
+	    	res.send("Error");
 	    }
 	});
 

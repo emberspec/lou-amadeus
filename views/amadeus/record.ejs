@@ -332,7 +332,7 @@
             event.preventDefault(); 
 
             if($("#txtRL").val() != ""){
-
+                $('.tblPnr').hide();
                 $('.tblData tbody > tr').remove();
 
                 $.ajax({
@@ -343,26 +343,35 @@
                     },
                     contentType:"application/x-www-form-urlencoded; charset=UTF-8",
                     dataType:"json",
-                    statusCode: {
-                        200: function (response) {
+                    success: function(response, status) {
+
+                        if(response.code == 102){
+                            
+                            $('.tblPnr').hide();
+                            showNotif('top','right', 'danger', 'Error : No record found', 'clear');
+
+                        }else{
+
                             $('.eachSegment').remove();
                             $('#insertPN').text($("#txtRL").val())
-                            if(typeof response.dataElementsMaster.dataElementsIndiv[7].serviceRequest.ssr.freeText != 'undefined'){
+                            if(typeof response.dataElementsMaster.dataElementsIndiv[7] == 'undefined'){
+                                var amount = "No Amount";
+                            }else if(typeof response.dataElementsMaster.dataElementsIndiv[7].serviceRequest.ssr.freeText != 'undefined'){
                                 var amount = response.dataElementsMaster.dataElementsIndiv[7].serviceRequest.ssr.freeText.substring(17);
                                 var strPHP = amount.substring(0,3);
                                 if(strPHP == "PHP"){
                                     amount = response.dataElementsMaster.dataElementsIndiv[7].serviceRequest.ssr.freeText.substring(17);
                                 }else{
-                                    amount = "No Price";
+                                    amount = "No Amount";
                                 }
                             }else{
-                                var amount = "No Price";
+                                var amount = "No Amount";
                             }
 
                             $('#insertAmount').text(amount);
                             $('#insertOfficeID').text(response.securityInformation.responsibilityInformation.officeId);
                             
-                            //indexOF lou ard hinumdumi
+                            //indexOF
                             if(typeof response.travellerInfo.length == 'undefined'){
 
                                 var paxType = response.travellerInfo.passengerData.travellerInformation.passenger.type;
@@ -429,9 +438,16 @@
                             $(".tblPnr").show();
 
                             $("#txtRL").val('');
- 
                         }
-                    }
+                        
+ 
+                        
+                    },
+                    error: function (jqXHR, exception) {
+                        $('.tblPnr').hide();
+                        showNotif('top','right', 'danger', 'Error : No record found', 'clear');
+                        
+                    },
                 })
             }else{
                 showNotif('top','right', 'danger', 'Input record locator', 'clear');

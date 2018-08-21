@@ -1,3 +1,13 @@
+.alert-info:hover, .card:hover{ 
+   box-shadow: 1px 8px 20px grey;
+  -webkit-transition:  box-shadow .3s ease-in;
+}
+
+.flight-queue:hover{ 
+   box-shadow: 1px 5px 10px black ;
+  -webkit-transition:  box-shadow .3s ease-in;
+}
+
 .modal-open {
     overflow: hidden;
 }
@@ -6,11 +16,13 @@
 
 .modal-bottom-pad {
 	padding-bottom: 20px;
+  padding-right: 20px;
+  padding-left: 20px;
 }
 
 .classes-card {
-	padding-left: 30px;
-	padding-right: 30px;
+	padding-left: 20px;
+	padding-right: 20px;
 	cursor: pointer;
 
 }
@@ -18,7 +30,7 @@
 .flight-queue {
 	padding-top: 5px;
 	padding-bottom: 5px;
-	width: 80%;
+	width: 100%;
 }
 
 .queue-destination-text {
@@ -30,7 +42,7 @@
 }
 
 .queue-container {
-	padding-bottom: 5px;
+	padding-bottom: 25px;
 	background-color: #b0bec5 !important;
 	background-image: url("../img/bg-view.jpeg");
 	background-position: center;
@@ -45,7 +57,7 @@
 @media (min-width: 1px) { 
 
 	.eachFlight {
-	  width: 100%;
+    margin-bottom: 17px;
 	  display: inline-block;
 	}
 
@@ -54,7 +66,7 @@
 @media (min-width: 768px) { 
 
 	.eachFlight {
-	  width: 50%;
+
 	  display: inline-block;
 	}
 
@@ -64,7 +76,7 @@
 @media (min-width: 1500px) {
 
 	.eachFlight {
-	  width: 33.33333333% !important;
+	  
 	}
 }
     

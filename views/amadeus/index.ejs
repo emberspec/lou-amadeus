@@ -25,6 +25,7 @@
 </head>
 
 <body >
+
     <div class="loading" style="display:none;">Loading&#8230;</div>
     <div class="wrapper">
         <div class="sidebar" data-color="blue" data-image="../assets/img/sidebar-1.jpg">
@@ -66,7 +67,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#"> Table List </a>
+                        <a class="navbar-brand" href="#"> Availability Search </a>
                     </div>
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
@@ -134,7 +135,7 @@
 
                     
                         
-                        <div class="col-md-9" id="queue-banner" >
+                        <div class="col-md-12" id="queue-banner" >
                             
                         </div>
                         
@@ -184,7 +185,7 @@
                     </div>
 
                     <div class=" col-sm-12 col-xs-12 invi" id="txtLegends" style="margin-bottom: 5px;">
-                        <div class="col-md-4" >
+                        <div class="col-md-12" >
                             <p id="lblOneWay" class="tripLabels1 pull-left origin-destination-label invi"><span id="oneWayOrigin"></span> <i class="material-icons">airplanemode_active</i> <span id="oneWayDestination"></span> </p>
                         </div>
 
@@ -245,7 +246,7 @@
                                     <div class="col-md-12" style="padding-left: 5px !important">
                                         <div class="form-group label-floating is-empty">
                                             <label class="control-label">Mobile Number</label>
-                                            <input type="text" id="txtMnumber" class="mdltxts form-control txtpsnger">
+                                            <input type="text" id="txtMnumber" onkeypress="return isNumber(event)" class="mdltxts form-control txtpsnger">
                                         <span class="material-input"></span></div>
                                     </div>
                                     <div class="col-md-12" style="padding-left: 5px !important">
@@ -258,7 +259,7 @@
                                         <div class="form-group label-floating is-empty">
                                             <label class="control-label input-label-float">Passenger Type</label>
                                             <select type="text" id="txtPType" class="mdltxts form-control txtpsnger">
-                                                <option value="ADT" selected>Aldult</option>
+                                                <option value="ADT" selected>Adult</option>
                                                 <option value="CHD">Child</option>
                                                 <option value="INF">Infant</option>
                                             </select>
@@ -313,7 +314,7 @@
                                     <div class="col-md-12" style="padding-left: 5px !important">
                                         <div class="form-group label-floating is-empty">
                                             <label class="control-label input-label-float">Mobile Number</label>
-                                            <input type="text" id="txtEditMnumber" class="mdltxts form-control txtpsnger">
+                                            <input type="text" id="txtEditMnumber"  onkeypress="return isNumber(event)" class="mdltxts form-control txtpsnger">
                                         <span class="material-input"></span></div>
                                     </div>
                                     <div class="col-md-12" style="padding-left: 5px !important">
@@ -383,10 +384,17 @@
 <script src="../javascripts/awesomplete.min.js"></script>
 <script src="../javascripts/airports.js"></script>
 <script type="text/javascript">
-
+    function isNumber(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        }
 
     $( document ).ready(function() {
-
+        
 
         $(window).on('shown.bs.modal', function() { 
             $('.sidebar .sidebar-wrapper, .main-panel'). perfectScrollbar('destroy');
@@ -542,7 +550,7 @@
                         
                         $('#queue-banner').append(
 
-                            '<div class="col-md-4   eachFlight ' + $(this).children('.get-elementclass-for-queue').text() + '" id="flight'  + flightID + '">' +
+                            '<div class="col-md-6 col-lg-3  eachFlight ' + $(this).children('.get-elementclass-for-queue').text() + '" id="flight'  + flightID + '">' +
                                 '<div class="alert text-center flight-queue eachSegments" id="thisSegment' + flightID + '" style="margin: auto; margin-top: 10px;"> ' +
                                     '<button type="button" aria-hidden="true" class="close btnRemoveFlight" id="flightRmvBtn' + flightID + '" style="color:black">×<span style="display:none;">' + $(this).children('.get-flight-isConnecting').text() + $(this).children('.get-flight-number').text() + '</span></button>' +
                                     '<br>' +
@@ -694,7 +702,8 @@
         //     alert(arrayForPassengerLimit);
         // }
 
-        $('form').submit(function( event ) {
+        $('#frmAvailability').submit(function( event ) {
+            $('.loading').show();
             var lasti = 0;
             event.preventDefault(); 
             if(validator()) { 
@@ -710,13 +719,14 @@
                     contentType:"application/x-www-form-urlencoded; charset=UTF-8",
                     dataType:"json",
                     success: function(response, status){
+                        
                         $('#showResultsRoundTrip').empty();
                         $('.tripLabels2').hide();
                         $('#showResults').empty();
                         $('#txtLegends').show();
                         $('.tripLabels1').show();
-                        $('#oneWayOrigin').html($('#txtOrigin').val());
-                        $('#oneWayDestination').text($('#txtDestination').val());
+                        $('#oneWayOrigin').html($('#txtOrigin').val().toUpperCase());
+                        $('#oneWayDestination').text($('#txtDestination').val().toUpperCase());
                         
 
                         var i = 0 
@@ -727,6 +737,13 @@
                             if(flight.isConnecting){
                                 colorType = "warning";
                             }
+                            //console.log(flight.productClass);
+                            if(flight.productClass == ""){
+                                var productClass = "None";
+                            }else{
+                                var productClass = flight.productClass;
+                            }
+
                             $('#showResults').append(
                                 '<div class="col-md-4 col-sm-6 col-xs-6 col-lg-2 flightsRslt"  id="rsl' + flight.flightDetails.flightNumber + '"  style="cursor: pointer">' +
                                     '<div class="card alert alert-' + colorType + '">' +
@@ -753,11 +770,11 @@
                                                         '</div>' +
                                                         '<div class="col-md-3 col-xs-6 text-center">' +
                                                             '<h3>' +flight.flightDetails.departure.location + '</h3>' +
-                                                            '<h4>' + flight.flightDetails.departure.date + ' | ' + flight.flightDetails.departure.time + '</h4>' +
+                                                            '<h4>' + moment(flight.flightDetails.departure.date, 'DDMMYY').format('YYYY-MM-DD') + ' | ' + flight.flightDetails.departure.time.slice(0, 2) + ":" + flight.flightDetails.departure.time.slice(2) + '</h4>' +
                                                         '</div>' +
                                                         '<div class="col-md-3 col-xs-6 text-center">' +
                                                             '<h3>' + flight.flightDetails.arrival.location + '</h3>' +
-                                                            '<h4>' + flight.flightDetails.arrival.date + ' | ' + flight.flightDetails.arrival.time + '</h4>' +
+                                                            '<h4>' + moment(flight.flightDetails.arrival.date, 'DDMMYY').format('YYYY-MM-DD') + ' | ' + flight.flightDetails.arrival.time.slice(0, 2) + ":" + flight.flightDetails.arrival.time.slice(2) + '</h4>' +
                                                         '</div>' +
                                                         '<div class="col-md-3 col-xs-6 text-center">' +
                                                             '<h3>' + flight.flightDetails.carrierCode + '</h3>' +
@@ -776,7 +793,7 @@
                                                             '<h4>Stops</h4>' +
                                                         '</div>' +
                                                         '<div class="col-md-3 col-xs-6 text-center">' +
-                                                            '<h3>' + flight.productClass + '</h3>' +
+                                                            '<h3>' + productClass + '</h3>' +
                                                             '<h4>Product Class</h4>' +
                                                         '</div>' +
                                                         '<br>' +
@@ -801,6 +818,7 @@
 
                 
                         });
+                        
 
                         
                         isFlightSelected('flightsRslt');
@@ -821,10 +839,11 @@
                                 contentType:"application/x-www-form-urlencoded; charset=UTF-8",
                                 dataType:"json",
                                 success: function(response, status){
+                                    
                                     $('#showResultsRoundTrip').empty();
                                     $('.tripLabels2').show();
-                                    $('#roundTripOrigin').text($('#txtDestination').val());
-                                    $('#roundTripDestination').text($('#txtOrigin').val());
+                                    $('#roundTripOrigin').text($('#txtDestination').val().toUpperCase());
+                                    $('#roundTripDestination').text($('#txtOrigin').val().toUpperCase());
                                     
 
                                     var i = lasti;
@@ -835,6 +854,12 @@
                                         if(flight.isConnecting){
                                             colorType = "warning";
                                         }
+                                        if(flight.productClass == ""){
+                                            var productClass = "None";
+                                        }else{
+                                            var productClass = flight.productClass;
+                                        }
+
                                         $('#showResultsRoundTrip').append(
                                             '<div class="col-md-4 col-sm-6 col-xs-6 col-lg-2 flightsRslt classToLoopOnCheck" id="rsl' + flight.flightDetails.flightNumber + '"  style="cursor: pointer">' +
                                                 '<div class="card alert alert-' + colorType + '">' +
@@ -861,11 +886,11 @@
                                                                     '</div>' +
                                                                     '<div class="col-md-3 col-xs-6 text-center">' +
                                                                         '<h3>' +flight.flightDetails.departure.location + '</h3>' +
-                                                                        '<h4>' + flight.flightDetails.departure.date + ' | ' + flight.flightDetails.departure.time + '</h4>' +
+                                                                        '<h4>' + moment(flight.flightDetails.departure.date, 'DDMMYY').format('YYYY-MM-DD') + ' | ' + flight.flightDetails.departure.time.slice(0, 2) + ":" + flight.flightDetails.departure.time.slice(2) + '</h4>' +
                                                                     '</div>' +
                                                                     '<div class="col-md-3 col-xs-6 text-center">' +
                                                                         '<h3>' + flight.flightDetails.arrival.location + '</h3>' +
-                                                                        '<h4>' + flight.flightDetails.arrival.date + ' | ' + flight.flightDetails.arrival.time + '</h4>' +
+                                                                        '<h4>' + moment(flight.flightDetails.arrival.date, 'DDMMYY').format('YYYY-MM-DD') + ' | ' + flight.flightDetails.arrival.time.slice(0, 2) + ":" + flight.flightDetails.arrival.time.slice(2) + '</h4>' +
                                                                     '</div>' +
                                                                     '<div class="col-md-3 col-xs-6 text-center">' +
                                                                         '<h3>' + flight.flightDetails.carrierCode + '</h3>' +
@@ -884,7 +909,7 @@
                                                                         '<h4>Stops</h4>' +
                                                                     '</div>' +
                                                                     '<div class="col-md-3 col-xs-6 text-center">' +
-                                                                        '<h3>' + flight.productClass + '</h3>' +
+                                                                        '<h3>' + productClass + '</h3>' +
                                                                         '<h4>Product Class</h4>' +
                                                                     '</div>' +
                                                                     '<br>' +
@@ -1012,14 +1037,43 @@
                                     //         }
                                     //     }
                                     // });
+                                        
 
-                                }
+                                },
+                                error: function (jqXHR, exception) {
+                                    $('.loading').hide();
+                                    showNotif('top','right', 'danger', 'No results found on round trip availability search', 'clear');
+                                    
+                                },
                             })
+                            $('.loading').hide();
                         }else{
                             $('.tripLabels2').hide();
+                            $('.loading').hide();
                         }
 
-                    }
+                    },
+                    error: function (jqXHR, exception) {
+                        $('.loading').hide();
+                        showNotif('top','right', 'danger', 'No results found', 'clear');
+                        // var msg = '';
+                        // if (jqXHR.status === 0) {
+                        //     msg = 'Not connect.\n Verify Network.';
+                        // } else if (jqXHR.status == 404) {
+                        //     msg = 'Requested page not found. [404]';
+                        // } else if (jqXHR.status == 500) {
+                        //     msg = 'Internal Server Error [500].';
+                        // } else if (exception === 'parsererror') {
+                        //     msg = 'Requested JSON parse failed.';
+                        // } else if (exception === 'timeout') {
+                        //     msg = 'Time out error.';
+                        // } else if (exception === 'abort') {
+                        //     msg = 'Ajax request aborted.';
+                        // } else {
+                        //     msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                        // }
+                        // alert(msg);
+                    },
                 })
 
                 
@@ -1147,11 +1201,7 @@
                 }); 
 
                 if(isNameSimilar){
-                    var confirmation = confirm("Passenger name is already added. Continue adding?");
-
-                    if(confirmation){
-                        addPassenger();
-                    }
+                    showNotif('top','right', 'danger', 'Error: Passenger name is already existing if duplicate name create new transaction', 'clear');
                 }else{
                     addPassenger();
                 }
@@ -1179,205 +1229,223 @@
             var eachItinerary = {};
             var references = [];
             var eachReferences = {};
+            var passengerTotalNumber = $('.eachPassenger').length;
 
-            $('.eachPassenger').each(function(i, obj) {
-                i = i + 1;
-                var thisId = $(this).attr("id").substring(9);
+            if(passengerTotalNumber > 0){
+                $('.eachPassenger').each(function(i, obj) {
+                    i = i + 1;
+                    var thisId = $(this).attr("id").substring(9);
 
-                passengers[passsengerCTR] = { 
+                    passengers[passsengerCTR] = { 
 
-                    "firstName": $(this).children('#getFname' + thisId).text(), 
+                        "firstName": $(this).children('#getFname' + thisId).text(), 
 
-                    "lastName": $(this).children('#getLname' + thisId).text(),
+                        "lastName": $(this).children('#getLname' + thisId).text(),
 
-                    "gender": $(this).children('#getGender' + thisId).text(),
+                        "gender": $(this).children('#getGender' + thisId).text(),
 
-                    "travellerType": $(this).children('#getPType' + thisId).text()
-
-                };
-
-                if($(this).children('#getMnumber' + thisId).text() != ""){
-                    eachReferences = {
-                        "type" : "PR",
-                        "id"   : i
-                    }
-
-                    references.push(eachReferences);
-                    eachReferences = {};
-
-                    contacts[contactCTR] = {
-
-                      "type": "mobile",
-
-                      "value": $(this).children('#getMnumber' + thisId).text(),
-
-                      "references": references
+                        "travellerType": $(this).children('#getPType' + thisId).text()
 
                     };
-                    references = [];
-                    contactCTR = contactCTR + 1;
-                }
-                
 
-                if($(this).children('#getEmail' + thisId).text() != ""){
-
-                    eachReferences = {
-                        "type" : "PR",
-                        "id"   : i
-                    }
-
-                    references.push(eachReferences);
-                    eachReferences = {};
-
-                    contacts[contactCTR] = {
-
-                      "type": "email",
-
-                      "value": $(this).children('#getEmail' + thisId).text(),
-
-                      "references": references
-
-                    };
-                    references = [];
-                    contactCTR = contactCTR + 1;
-                }
-
-                passsengerCTR = passsengerCTR + 1;
-            });
-
-
-            var previousItineraryOrigin = "";
-            var previousItineraryDestination = "";
-            var isNewItinerary = false;
-            var totalSegments = $('.eachSegments').length;
-
-            var arrayOfItinerary = {};
-            var arrayOFItineraryCtr = 0;
-            var uniqueItinerary = {};
-
-            $('.eachSegments').each(function(i, obj) {
-                var thisIdSegment = $(this).attr("id").substring(11);
-                
-                var formattedDate = moment($(this).children('#get-segment-date' + thisIdSegment).text(), 'DDMMYY').format('YYYY-MM-DD')
-                originalDate = formattedDate + ' ' + $(this).children('#get-segment-time' + thisIdSegment).text();
-
-                segments[0] = {
-                    "date": originalDate, 
-
-                    "origin": $(this).children('#get-segment-departure' + thisIdSegment).text(), 
-
-                    "destination": $(this).children('#get-segment-arrival' + thisIdSegment).text(), 
-
-                    "flightNumber": $(this).children('#get-segment-number' + thisIdSegment).text() , 
-
-                    "bookingClass": $(this).children('#get-segment-class' + thisIdSegment).text(), 
-
-                    "company": $(this).children('#get-carrier-code' + thisIdSegment).text()
-
-                }
-
-                //console.log(segments);
-                arrayOfItinerary[arrayOFItineraryCtr] = {
-                    'origin'      : $(this).children('#get-flight-ITR-origin' + thisIdSegment).text(),
-                    'destination' : $(this).children('#get-flight-ITR-destination' + thisIdSegment).text(),
-                    'segments'    : segments
-                };
-
-                arrayOFItineraryCtr = arrayOFItineraryCtr + 1;
-                segments = [];
-
-                // var thisIdSegment = $(this).attr("id").substring(11);
-                // if(previousItineraryOrigin == "" || previousItineraryOrigin == $(this).children('#get-flight-ITR-origin' + thisIdSegment).text()){
-                        
-                //     if(previousItineraryDestination == "" || previousItineraryDestination == $(this).children('#get-flight-ITR-destination' + thisIdSegment).text()){
-                //         previousItineraryOrigin = $(this).children('#get-flight-ITR-origin' + thisIdSegment).text();
-                //         previousItineraryDestination = $(this).children('#get-flight-ITR-destination' + thisIdSegment).text();
-                //     }else{
-                //         isNewItinerary = true;
-                        
-
-                //     }
-
-                // }else{
-                //     isNewItinerary = true;
-                    
-
-                // }
-                
-                // if(isNewItinerary){
-                //     eachItinerary = {
-                //         origin      : previousItineraryOrigin,
-                //         destination : previousItineraryDestination,
-                //         segments    : segments
-                //     };
-                //     segments = [];
-                //     segmentReset = 0;
-                //     itineraries.push(eachItinerary);
-                //     eachItinerary = {};
-                //     isNewItinerary = false;
-                //     previousItineraryOrigin = $(this).children('#get-flight-ITR-origin' + thisIdSegment).text();
-                //     previousItineraryDestination = $(this).children('#get-flight-ITR-destination' + thisIdSegment).text();
-                // }
-
-                // var formattedDate = moment($(this).children('#get-segment-date' + thisIdSegment).text(), 'DDMMYY').format('YYYY-MM-DD') 
-                // originalDate = formattedDate + ' ' + $(this).children('#get-segment-time' + thisIdSegment).text();
-                // segments[segmentReset] = {
-                //     "date": originalDate, 
-
-                //     "origin": $(this).children('#get-segment-departure' + thisIdSegment).text(), 
-
-                //     "destination": $(this).children('#get-segment-arrival' + thisIdSegment).text(), 
-
-                //     "flightNumber": $(this).children('#get-segment-number' + thisIdSegment).text() , 
-
-                //     "bookingClass": $(this).children('#get-segment-class' + thisIdSegment).text(), 
-
-                //     "company": "5J"
-
-                // }
-
-                // segmentReset = segmentReset + 1;
-                // segmentCTR = segmentCTR + 1;
-                // if(segmentCTR == totalSegments){
-                //     eachItinerary = {
-                //         origin      : $(this).children('#get-flight-ITR-origin' + thisIdSegment).text(),
-                //         destination : $(this).children('#get-flight-ITR-destination' + thisIdSegment).text(),
-                //         segments    : segments
-                //     };
-                //     segments = [];
-                //     segmentReset = 0;
-                //     itineraries.push(eachItinerary);
-                //     eachItinerary = {};
-                //     isNewItinerary = false;
-                //     previousItineraryOrigin = $(this).children('#get-flight-ITR-origin' + thisIdSegment).text();
-                //     previousItineraryDestination = $(this).children('#get-flight-ITR-destination' + thisIdSegment).text();
-                // }
-
-            });
-
-            
-
-           
-            var uniqueItineraryIndex = 0;
-            var allItnrCTR;
-            var hasLength = false;
-            var isSameOriDes = false;
-            for(var key in arrayOfItinerary) {
-                
-                if(hasLength){
-                    for(var key2 in uniqueItinerary) {
-                        
-                        if(arrayOfItinerary[key].origin == uniqueItinerary[key2].origin && arrayOfItinerary[key].destination == uniqueItinerary[key2].destination){
-
-                            var nextIndex = uniqueItinerary[key2].segments.length;
-                            uniqueItinerary[key2].segments[nextIndex] = arrayOfItinerary[key].segments[0]; 
-                            isSameOriDes = true;
+                    if($(this).children('#getMnumber' + thisId).text() != ""){
+                        eachReferences = {
+                            "type" : "PR",
+                            "id"   : i
                         }
 
+                        references.push(eachReferences);
+                        eachReferences = {};
+
+                        contacts[contactCTR] = {
+
+                          "type": "mobile",
+
+                          "value": $(this).children('#getMnumber' + thisId).text(),
+
+                          "references": references
+
+                        };
+                        references = [];
+                        contactCTR = contactCTR + 1;
+                    }
+                    
+
+                    if($(this).children('#getEmail' + thisId).text() != ""){
+
+                        eachReferences = {
+                            "type" : "PR",
+                            "id"   : i
+                        }
+
+                        references.push(eachReferences);
+                        eachReferences = {};
+
+                        contacts[contactCTR] = {
+
+                          "type": "email",
+
+                          "value": $(this).children('#getEmail' + thisId).text(),
+
+                          "references": references
+
+                        };
+                        references = [];
+                        contactCTR = contactCTR + 1;
+                    }
+
+                    passsengerCTR = passsengerCTR + 1;
+                });
+
+
+                var previousItineraryOrigin = "";
+                var previousItineraryDestination = "";
+                var isNewItinerary = false;
+                var totalSegments = $('.eachSegments').length;
+
+                var arrayOfItinerary = {};
+                var arrayOFItineraryCtr = 0;
+                var uniqueItinerary = {};
+
+                $('.eachSegments').each(function(i, obj) {
+                    var thisIdSegment = $(this).attr("id").substring(11);
+                    
+                    var formattedDate = moment($(this).children('#get-segment-date' + thisIdSegment).text(), 'DDMMYY').format('YYYY-MM-DD')
+                    originalDate = formattedDate + ' ' + $(this).children('#get-segment-time' + thisIdSegment).text();
+
+                    segments[0] = {
+                        "date": originalDate, 
+
+                        "origin": $(this).children('#get-segment-departure' + thisIdSegment).text(), 
+
+                        "destination": $(this).children('#get-segment-arrival' + thisIdSegment).text(), 
+
+                        "flightNumber": $(this).children('#get-segment-number' + thisIdSegment).text() , 
+
+                        "bookingClass": $(this).children('#get-segment-class' + thisIdSegment).text(), 
+
+                        "company": $(this).children('#get-carrier-code' + thisIdSegment).text()
 
                     }
 
-                    if(!isSameOriDes) {
+                    //console.log(segments);
+                    arrayOfItinerary[arrayOFItineraryCtr] = {
+                        'origin'      : $(this).children('#get-flight-ITR-origin' + thisIdSegment).text(),
+                        'destination' : $(this).children('#get-flight-ITR-destination' + thisIdSegment).text(),
+                        'segments'    : segments
+                    };
+
+                    arrayOFItineraryCtr = arrayOFItineraryCtr + 1;
+                    segments = [];
+
+                    // var thisIdSegment = $(this).attr("id").substring(11);
+                    // if(previousItineraryOrigin == "" || previousItineraryOrigin == $(this).children('#get-flight-ITR-origin' + thisIdSegment).text()){
+                            
+                    //     if(previousItineraryDestination == "" || previousItineraryDestination == $(this).children('#get-flight-ITR-destination' + thisIdSegment).text()){
+                    //         previousItineraryOrigin = $(this).children('#get-flight-ITR-origin' + thisIdSegment).text();
+                    //         previousItineraryDestination = $(this).children('#get-flight-ITR-destination' + thisIdSegment).text();
+                    //     }else{
+                    //         isNewItinerary = true;
+                            
+
+                    //     }
+
+                    // }else{
+                    //     isNewItinerary = true;
+                        
+
+                    // }
+                    
+                    // if(isNewItinerary){
+                    //     eachItinerary = {
+                    //         origin      : previousItineraryOrigin,
+                    //         destination : previousItineraryDestination,
+                    //         segments    : segments
+                    //     };
+                    //     segments = [];
+                    //     segmentReset = 0;
+                    //     itineraries.push(eachItinerary);
+                    //     eachItinerary = {};
+                    //     isNewItinerary = false;
+                    //     previousItineraryOrigin = $(this).children('#get-flight-ITR-origin' + thisIdSegment).text();
+                    //     previousItineraryDestination = $(this).children('#get-flight-ITR-destination' + thisIdSegment).text();
+                    // }
+
+                    // var formattedDate = moment($(this).children('#get-segment-date' + thisIdSegment).text(), 'DDMMYY').format('YYYY-MM-DD') 
+                    // originalDate = formattedDate + ' ' + $(this).children('#get-segment-time' + thisIdSegment).text();
+                    // segments[segmentReset] = {
+                    //     "date": originalDate, 
+
+                    //     "origin": $(this).children('#get-segment-departure' + thisIdSegment).text(), 
+
+                    //     "destination": $(this).children('#get-segment-arrival' + thisIdSegment).text(), 
+
+                    //     "flightNumber": $(this).children('#get-segment-number' + thisIdSegment).text() , 
+
+                    //     "bookingClass": $(this).children('#get-segment-class' + thisIdSegment).text(), 
+
+                    //     "company": "5J"
+
+                    // }
+
+                    // segmentReset = segmentReset + 1;
+                    // segmentCTR = segmentCTR + 1;
+                    // if(segmentCTR == totalSegments){
+                    //     eachItinerary = {
+                    //         origin      : $(this).children('#get-flight-ITR-origin' + thisIdSegment).text(),
+                    //         destination : $(this).children('#get-flight-ITR-destination' + thisIdSegment).text(),
+                    //         segments    : segments
+                    //     };
+                    //     segments = [];
+                    //     segmentReset = 0;
+                    //     itineraries.push(eachItinerary);
+                    //     eachItinerary = {};
+                    //     isNewItinerary = false;
+                    //     previousItineraryOrigin = $(this).children('#get-flight-ITR-origin' + thisIdSegment).text();
+                    //     previousItineraryDestination = $(this).children('#get-flight-ITR-destination' + thisIdSegment).text();
+                    // }
+
+                });
+
+                
+
+               
+                var uniqueItineraryIndex = 0;
+                var allItnrCTR;
+                var hasLength = false;
+                var isSameOriDes = false;
+                for(var key in arrayOfItinerary) {
+                    
+                    if(hasLength){
+                        for(var key2 in uniqueItinerary) {
+                            
+                            if(arrayOfItinerary[key].origin == uniqueItinerary[key2].origin && arrayOfItinerary[key].destination == uniqueItinerary[key2].destination){
+
+                                var nextIndex = uniqueItinerary[key2].segments.length;
+                                uniqueItinerary[key2].segments[nextIndex] = arrayOfItinerary[key].segments[0]; 
+                                isSameOriDes = true;
+                            }
+
+
+                        }
+
+                        if(!isSameOriDes) {
+
+                            uniqueItinerary[uniqueItineraryIndex] = {
+                                origin      : arrayOfItinerary[key].origin,
+                                destination : arrayOfItinerary[key].destination,
+                                segments    : arrayOfItinerary[key].segments
+                            };
+
+                            uniqueItineraryIndex = uniqueItineraryIndex + 1;
+
+                            
+                        }
+                        
+                        isSameOriDes = false;
+                    
+                    }else{
+                        
 
                         uniqueItinerary[uniqueItineraryIndex] = {
                             origin      : arrayOfItinerary[key].origin,
@@ -1386,109 +1454,99 @@
                         };
 
                         uniqueItineraryIndex = uniqueItineraryIndex + 1;
+                        
 
+                        hasLength = true;
                         
                     }
                     
-                    isSameOriDes = false;
-                
-                }else{
+
+                    
                     
 
-                    uniqueItinerary[uniqueItineraryIndex] = {
-                        origin      : arrayOfItinerary[key].origin,
-                        destination : arrayOfItinerary[key].destination,
-                        segments    : arrayOfItinerary[key].segments
-                    };
-
-                    uniqueItineraryIndex = uniqueItineraryIndex + 1;
-                    
-
-                    hasLength = true;
                     
                 }
-                
 
-                
-                
+                for(var ITRCTR in uniqueItinerary) {
 
-                
-            }
+                    itineraries.push(uniqueItinerary[ITRCTR]);
+                    
+                }
 
-            for(var ITRCTR in uniqueItinerary) {
+                // console.log(uniqueItinerary);
+                // console.log(arrayOfItinerary);
+                // console.log(passengers);
+                // console.log(contacts);
+                //console.log(itineraries);
+                $.ajax({
+                    url:"./segments",
+                    type:"POST",
+                    data:{
+                        itineraries: itineraries || ''
+                    },
+                    contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+                    dataType:"json",
+                    statusCode: {
+                        200: function (response) {
+                            $.ajax({
+                                url:"./passengers",
+                                type:"POST",
+                                data:{
+                                    passengers: passengers || ''
+                                },
+                                contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+                                dataType:"json",
+                                statusCode: {
+                                    200: function (response) {
+                                        $.ajax({
+                                            url:"./contacts",
+                                            type:"POST",
+                                            data:{
+                                                contact: contacts || ''
+                                            },
+                                            contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+                                            statusCode: {
+                                                200: function (response) {
+                                                    $('.loading').hide();
+                                                    var responseType = response.substring(0, 5);
+                                                    var successMsg = "Successfully book. Record Locator : " + response;
+                                                    showNotif('top','right', 'success', successMsg, 'check');
+                                                    if(responseType == "Error" ){
+                                                    }else{
+                                                        $('.eachFlight').remove();
+                                                        $('.eachPassenger').remove();
+                                                        $('.btnBookSell1').hide();
+                                                        $('.mdltxts').val('');
+                                                        $('.mdlBook').modal('hide');
+                                                        $('#lblPassengers').hide();
+                                                        passengers = [];
+                                                        contacts = [];
+                                                        segments = [];
+                                                        passsengerCTR = 0;
+                                                        contactCTR = 0;
+                                                        segmentCTR = 0;
+                                                        segmentReset = 0;
+                                                        itineraries = [];
+                                                        eachItinerary = {};
+                                                        references = [];
+                                                        eachReferences = {};
+                                                        passengerLimit = 0;
+                                                    }
 
-                itineraries.push(uniqueItinerary[ITRCTR]);
-                
-            }
-
-            // console.log(uniqueItinerary);
-            // console.log(arrayOfItinerary);
-            // console.log(passengers);
-            // console.log(contacts);
-            //console.log(itineraries);
-            $.ajax({
-                url:"./segments",
-                type:"POST",
-                data:{
-                    itineraries: itineraries || ''
-                },
-                contentType:"application/x-www-form-urlencoded; charset=UTF-8",
-                dataType:"json",
-                statusCode: {
-                    200: function (response) {
-                        $.ajax({
-                            url:"./passengers",
-                            type:"POST",
-                            data:{
-                                passengers: passengers || ''
-                            },
-                            contentType:"application/x-www-form-urlencoded; charset=UTF-8",
-                            dataType:"json",
-                            statusCode: {
-                                200: function (response) {
-                                    $.ajax({
-                                        url:"./contacts",
-                                        type:"POST",
-                                        data:{
-                                            contact: contacts || ''
-                                        },
-                                        contentType:"application/x-www-form-urlencoded; charset=UTF-8",
-                                        statusCode: {
-                                            200: function (response) {
-                                                $('.loading').hide();
-                                                var responseType = response.substring(0, 5);
-                                                var successMsg = "Successfully book. Record Locator : " + response;
-                                                showNotif('top','right', 'success', successMsg, 'check');
-                                                if(responseType == "Error" ){
-                                                }else{
-                                                    $('.eachFlight').remove();
-                                                    $('.eachPassenger').remove();
-                                                    $('.btnBookSell1').hide();
-                                                    $('.mdltxts').val('');
-                                                    $('.mdlBook').modal('hide');
-                                                    passengers = [];
-                                                    contacts = [];
-                                                    segments = [];
-                                                    passsengerCTR = 0;
-                                                    contactCTR = 0;
-                                                    segmentCTR = 0;
-                                                    segmentReset = 0;
-                                                    itineraries = [];
-                                                    eachItinerary = {};
-                                                    references = [];
-                                                    eachReferences = {};
-                                                    passengerLimit = 0;
                                                 }
-
                                             }
-                                        }
-                                    })
+                                        })
+                                    }
                                 }
-                            }
-                        })
+                            })
+                        }
                     }
-                }
-            })
+                })
+            }else{
+                showNotif('top','right', 'danger', 'No passengers added.', 'clear');
+                $('.loading').hide();
+            }
+            
 
            
         });
