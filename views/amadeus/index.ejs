@@ -28,36 +28,9 @@
 
     <div class="loading" style="display:none;">Loading&#8230;</div>
     <div class="wrapper">
-        <div class="sidebar" data-color="blue" data-image="../assets/img/sidebar-1.jpg">
-            <!--
-            Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
-
-            Tip 2: you can also add an image using data-image tag
-            -->
-            <div class="logo">
-                <a href="#" class="simple-text">
-                    ESALES
-                </a>
-            </div>
-            <div class="sidebar-wrapper">
-                <ul class="nav">
-                    <li class="active">
-                        <a href="./availability">
-                            <i class="material-icons">dashboard</i>
-                            <p>Flights Availability</p>
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a href="./record">
-                            <i class="material-icons">list</i>
-                            <p>PNR Records</p>
-                        </a>
-                    </li>
-
-                </ul>
-            </div>
-        </div>
-        <div class="main-panel ">
+        <% include partials/sidebar %>
+        
+        <div class="main-panel " id="main">
             <nav class="navbar navbar-transparent navbar-absolute">
                 <div class="container-fluid">
                     <div class="navbar-header">
@@ -127,8 +100,6 @@
                     <div class="col-md-12 alert queue-container" style="min-height: 177px;">
                         <div class=" col-xs-12 col-md-2 btnBookSell1" style=" display:none;">
                             <button type="submit" id="btnBook" class="btn btn-lg  " style="background-color: #26a69a; ; " data-toggle="modal" data-target=".mdlBook"><i class="material-icons ">play_arrow</i> BOOK FLIGHTS </button> 
-                            
-                            
 
                         </div>
 
@@ -182,9 +153,36 @@
                                 </form>
                             </div>
                         </div>
+
+
+                        <div class="card ">
+                            <div class="card-content">
+                                <h4 class="title">FILTERS</h4>
+                                <br>
+                                <label>Filter Carrier</label>
+                                <div id="dd" class="wrapper-dropdown-3 " tabindex="1">
+                                    <span>Show all carrier</span>
+                                    <ul class="dropdown">
+                                        <li><a href="#" class="carrierFilter">Show all carrier</a></li>
+                                        <li><a href="#" class="carrierFilter">Show only : 5J</a></li>
+                                        <li><a href="#" class="carrierFilter">Show only : PR</a></li>
+                                        <li><a href="#" class="carrierFilter">Show only : EY</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class=" col-sm-12 col-xs-12 ">
+                            
+                        </div>
+
+
                     </div>
 
-                    <div class=" col-sm-12 col-xs-12 invi" id="txtLegends" style="margin-bottom: 5px;">
+                    
+                    <div class=" col-sm-12 col-xs-12 " id="txtLegends" style="margin-bottom: 5px;">
+                        
                         <div class="col-md-12" >
                             <p id="lblOneWay" class="tripLabels1 pull-left origin-destination-label invi"><span id="oneWayOrigin"></span> <i class="material-icons">airplanemode_active</i> <span id="oneWayDestination"></span> </p>
                         </div>
@@ -223,138 +221,138 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="col-md-10 col-md-offset-1">
-                        <div class="card">
-                            <div class="card-header" data-background-color="blue">
-                                <h4 class="title">Add Passenger</h4> 
-                            </div>
+                    <div class="card">
+                        <div class="card-header" data-background-color="blue">
+                            <h4 class="title">Add Passenger</h4> 
+                        </div>
 
-                            <div class="card-content frmAddPax">
-                                   
-                                    <div class="col-md-12" style="padding-left: 5px !important">
-                                        <div class="form-group label-floating is-empty">
-                                            <label class="control-label ">First Name</label>
-                                            <input type="text" id="txtFname" class="mdltxts form-control txtpsnger">
-                                        <span class="material-input"></span></div>
-                                    </div>
-
-                                    <div class="col-md-12" style="padding-left: 5px !important">
-                                        <div class="form-group label-floating is-empty">
-                                            <label class="control-label">Last Name</label>
-                                            <input type="text" id="txtLname" class="mdltxts form-control txtpsnger">
-                                        <span class="material-input"></span></div>
-                                    </div>
-                                    <div class="col-md-12" style="padding-left: 5px !important">
-                                        <div class="form-group label-floating is-empty">
-                                            <label class="control-label">Mobile Number</label>
-                                            <input type="text" id="txtMnumber" onkeypress="return isNumber(event)" class="mdltxts form-control txtpsnger">
-                                        <span class="material-input"></span></div>
-                                    </div>
-                                    <div class="col-md-12" style="padding-left: 5px !important">
-                                        <div class="form-group label-floating is-empty">
-                                            <label class="control-label">Email</label>
-                                            <input type="text" id="txtEmail" class="mdltxts form-control txtpsnger">
-                                        <span class="material-input"></span></div>
-                                    </div>
-                                    <div class="col-xs-12 col-md-6" style="padding-left: 5px !important">
-                                        <div class="form-group label-floating is-empty">
-                                            <label class="control-label input-label-float">Passenger Type</label>
-                                            <select type="text" id="txtPType" class="mdltxts form-control txtpsnger">
-                                                <option value="ADT" selected>Adult</option>
-                                                <option value="CHD">Child</option>
-                                                <option value="INF">Infant</option>
-                                            </select>
-                                        <span class="material-input"></span></div>
-                                    </div>
-                                    <div class="col-xs-12 col-md-6" style="padding-left: 5px !important">
-                                        <div class="form-group label-floating is-empty">
-                                            <label class="control-label input-label-float">Gender</label>
-                                            <select type="text" id="txtGender" class="mdltxts form-control txtpsnger">
-                                                <option value="male" selected>Male</option>
-                                                <option value="female">Female</option>
-                                            </select>
-                                        <span class="material-input"></span></div>
-                                    </div>
-
-                                    
-                                    
-                                    <button type="submit" id="btnAddPassenger"  class="btn btn-success pull-right">Add Passenger</button>
-                                    <button type="submit" id="btnClosePssngrModal"  class="btn btn-warning pull-right">Close</button>
-                                    
-                                    <div class="clearfix"></div>
+                        <div class="card-content frmAddPax">
                                
-                            </div>
+                                <div class="col-md-12" style="padding-left: 5px !important">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label ">First Name</label>
+                                        <input type="text" id="txtFname" class="mdltxts form-control txtpsnger">
+                                    <span class="material-input"></span></div>
+                                </div>
 
-                            <div id="lblPassengers" class="col-md-12 invi frmAddPax">
-                                <br>
-                                <hr>
-                                <span >Passengers<span style="color:#9e9e9e">(click passenger to remove or edit)</span> :</span> <br>
-                                <span id="insert_passengers">
-                                    
-                                </span>
-                                <br>
-                                <button type="submit" id="btnSubmitPassenger" class="btn btn-info pull-right">Submit</button>
-                                <br><br>
-                            </div>
+                                <div class="col-md-12" style="padding-left: 5px !important">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label">Last Name</label>
+                                        <input type="text" id="txtLname" class="mdltxts form-control txtpsnger">
+                                    <span class="material-input"></span></div>
+                                </div>
+                                <div class="col-md-12" style="padding-left: 5px !important">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label">Mobile Number</label>
+                                        <input type="text" id="txtMnumber" onkeypress="return isNumber(event)" class="mdltxts form-control txtpsnger">
+                                    <span class="material-input"></span></div>
+                                </div>
+                                <div class="col-md-12" style="padding-left: 5px !important">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label">Email</label>
+                                        <input type="text" id="txtEmail" class="mdltxts form-control txtpsnger">
+                                    <span class="material-input"></span></div>
+                                </div>
+                                <div class="col-xs-12 col-md-6" style="padding-left: 5px !important">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label input-label-float">Passenger Type</label>
+                                        <select type="text" id="txtPType" class="mdltxts form-control txtpsnger">
+                                            <option value="ADT" selected>Adult</option>
+                                            <option value="CHD">Child</option>
+                                            <option value="INF">Infant</option>
+                                        </select>
+                                    <span class="material-input"></span></div>
+                                </div>
+                                <div class="col-xs-12 col-md-6" style="padding-left: 5px !important">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label input-label-float">Gender</label>
+                                        <select type="text" id="txtGender" class="mdltxts form-control txtpsnger">
+                                            <option value="male" selected>Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    <span class="material-input"></span></div>
+                                </div>
 
-                            <div class="card-content frmEditPax invi">
-                                   <span id="paxId" class="invi"></span>
-                                    <div class="col-md-12" style="padding-left: 5px !important">
-                                        <div class="form-group label-floating is-empty ">
-                                            <label class="control-label input-label-float">First Name</label>
-                                            <input type="text" id="txtEditFname" class="mdltxts form-control txtpsnger">
-                                        <span class="material-input"></span></div>
-                                    </div>
+                                
+                                
+                                <button type="submit" id="btnAddPassenger"  class="btn btn-success pull-right">Add Passenger</button>
+                                <button type="submit" id="btnClosePssngrModal"  class="btn btn-warning pull-right">Close</button>
+                                
+                                <div class="clearfix"></div>
+                           
+                        </div>
 
-                                    <div class="col-md-12" style="padding-left: 5px !important">
-                                        <div class="form-group label-floating is-empty">
-                                            <label class="control-label input-label-float">Last Name</label>
-                                            <input type="text" id="txtEditLname" class="mdltxts form-control txtpsnger">
-                                        <span class="material-input"></span></div>
-                                    </div>
-                                    <div class="col-md-12" style="padding-left: 5px !important">
-                                        <div class="form-group label-floating is-empty">
-                                            <label class="control-label input-label-float">Mobile Number</label>
-                                            <input type="text" id="txtEditMnumber"  onkeypress="return isNumber(event)" class="mdltxts form-control txtpsnger">
-                                        <span class="material-input"></span></div>
-                                    </div>
-                                    <div class="col-md-12" style="padding-left: 5px !important">
-                                        <div class="form-group label-floating is-empty">
-                                            <label class="control-label input-label-float">Email</label>
-                                            <input type="text" id="txtEditEmail" class="mdltxts form-control txtpsnger">
-                                        <span class="material-input"></span></div>
-                                    </div>
+                        <div id="lblPassengers" class="col-md-12 invi frmAddPax">
+                            <br>
+                            <hr>
+                            <span >Passengers<span style="color:#9e9e9e">(click passenger to remove or edit)</span> :</span> <br>
+                            <span id="insert_passengers">
+                                
+                            </span>
+                            <br>
+                            <button type="submit" id="btnSubmitPassenger" class="btn btn-info pull-right">Submit</button>
+                            <br><br>
+                        </div>
 
-                                    <div class="col-xs-12 col-md-6" style="padding-left: 5px !important">
-                                        <div class="form-group label-floating is-empty">
-                                            <label class="control-label input-label-float">Passenger Type</label>
-                                            <select type="text" id="txtEditPType" class="mdltxts form-control txtpsnger">
-                                                <option value="ADT" selected>Aldult</option>
-                                                <option value="CHD">Child</option>
-                                                <option value="INF">Infant</option>
-                                            </select>
-                                        <span class="material-input"></span></div>
-                                    </div>
+                        <div class="card-content frmEditPax invi">
+                               <span id="paxId" class="invi"></span>
+                                <div class="col-md-12" style="padding-left: 5px !important">
+                                    <div class="form-group label-floating is-empty ">
+                                        <label class="control-label input-label-float">First Name</label>
+                                        <input type="text" id="txtEditFname" class="mdltxts form-control txtpsnger">
+                                    <span class="material-input"></span></div>
+                                </div>
 
-                                    <div class="col-xs-12 col-md-6" style="padding-left: 5px !important">
-                                        <div class="form-group label-floating is-empty">
-                                            <label class="control-label input-label-float">Gender</label>
-                                            <select type="text" id="txtEditGender" class="mdltxts form-control txtpsnger">
-                                                <option value="male" selected>Male</option>
-                                                <option value="female">Female</option>
-                                            </select>
-                                        <span class="material-input"></span></div>
-                                    </div>
-                                    
-                                    <button type="submit" id="btnEdit"  class="btn btn-warning pull-right">Edit</button>
-                                    <button type="submit" id="btnRemove"  class="btn btn-danger pull-right">Remove</button>
-                                    <button type="submit" id="btnBack"  class="btn btn-info pull-right">Back</button>
-                                    
-                                    
-                                    <div class="clearfix"></div>
-                               
-                            </div>
+                                <div class="col-md-12" style="padding-left: 5px !important">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label input-label-float">Last Name</label>
+                                        <input type="text" id="txtEditLname" class="mdltxts form-control txtpsnger">
+                                    <span class="material-input"></span></div>
+                                </div>
+                                <div class="col-md-12" style="padding-left: 5px !important">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label input-label-float">Mobile Number</label>
+                                        <input type="text" id="txtEditMnumber"  onkeypress="return isNumber(event)" class="mdltxts form-control txtpsnger">
+                                    <span class="material-input"></span></div>
+                                </div>
+                                <div class="col-md-12" style="padding-left: 5px !important">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label input-label-float">Email</label>
+                                        <input type="text" id="txtEditEmail" class="mdltxts form-control txtpsnger">
+                                    <span class="material-input"></span></div>
+                                </div>
+
+                                <div class="col-xs-12 col-md-6" style="padding-left: 5px !important">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label input-label-float">Passenger Type</label>
+                                        <select type="text" id="txtEditPType" class="mdltxts form-control txtpsnger">
+                                            <option value="ADT" selected>Aldult</option>
+                                            <option value="CHD">Child</option>
+                                            <option value="INF">Infant</option>
+                                        </select>
+                                    <span class="material-input"></span></div>
+                                </div>
+
+                                <div class="col-xs-12 col-md-6" style="padding-left: 5px !important">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label input-label-float">Gender</label>
+                                        <select type="text" id="txtEditGender" class="mdltxts form-control txtpsnger">
+                                            <option value="male" selected>Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    <span class="material-input"></span></div>
+                                </div>
+                                
+                                <button type="submit" id="btnEdit"  class="btn btn-warning pull-right">Edit</button>
+                                <button type="submit" id="btnRemove"  class="btn btn-danger pull-right">Remove</button>
+                                <button type="submit" id="btnBack"  class="btn btn-info pull-right">Back</button>
+                                
+                                
+                                <div class="clearfix"></div>
+                           
                         </div>
                     </div>
+                </div>
             </div>
         </div>
     </div>
@@ -383,17 +381,73 @@
 
 <script src="../javascripts/awesomplete.min.js"></script>
 <script src="../javascripts/airports.js"></script>
+<script src="../assets/js/styleActions.js"></script>
 <script type="text/javascript">
+
     function isNumber(evt) {
-            evt = (evt) ? evt : window.event;
-            var charCode = (evt.which) ? evt.which : evt.keyCode;
-            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-                return false;
-            }
-            return true;
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
         }
+        return true;
+    }
+
+
 
     $( document ).ready(function() {
+
+        $(document).click(function(){
+          $("#dd").removeClass('active');
+        });
+
+        $("#dd").click(function(e){
+          e.stopPropagation();
+        });
+        
+
+        function DropDown(el) {
+            this.dd = el;
+            this.placeholder = this.dd.children('span');
+            this.opts = this.dd.find('ul.dropdown > li');
+            this.val = '';
+            this.index = -1;
+            this.initEvents();
+        }
+        DropDown.prototype = {
+            initEvents : function() {
+                var obj = this;
+
+                obj.dd.on('click', function(event){
+                    $(this).toggleClass('active');
+                    return false;
+                });
+
+                obj.opts.on('click',function(){
+                    var opt = $(this);
+                    obj.val = opt.text();
+                    obj.index = opt.index();
+                    obj.placeholder.text(obj.val);
+                });
+            },
+            getValue : function() {
+                return this.val;
+            },
+            getIndex : function() {
+                return this.index;
+            }
+        }
+
+        $(function() {
+
+            var dd = new DropDown( $('#dd') );
+
+            $(document).click(function() {
+                // all dropdowns
+                $('.wrapper-dropdown-1').removeClass('active');
+            });
+
+        });
         
 
         $(window).on('shown.bs.modal', function() { 
@@ -524,7 +578,12 @@
         }
 
         function classIsClick(elementClassName, isConnectingFlight) {
+
+            
+
             $(elementClassName).click(function(){
+                $('.loading').show();
+                var thisElement = $(this);
 
                 flightID = flightID + 1;
                 var toIdentify = $(this).children('.get-flight-number').text() + '(' + $(this).children('.flight-class').text().substring(7) + ')';
@@ -545,87 +604,117 @@
                     showNotif('top','right', 'danger', 'Class not available', 'clear');
                 }else{
                     if(!isRepeat){
+                        //$(this).children('.get-flight-departure').text()
+                        //$(this).children('.get-flight-number').text()
+                        //$(this).children('.get-flight-ITR-origin').text()
+                        //$(this).children('.get-flight-ITR-destination').text()
+                        //$(this).children('.flight-class').text().substring(7)
+                        //alert($(this).children('.flight-class').text().substring(7));
+                        $.ajax({
+                            url:"./recommendation",
+                            type:"POST",
+                            data:{
+                                departure_date  : moment($(this).children('.get-flight-date').text(), 'DDMMYY').format('YYYY-MM-DD') || '',
+                                from            : $(this).children('.get-flight-ITR-origin').text() || '',
+                                to              : $(this).children('.get-flight-ITR-destination').text() || '',
+                                companyCode     : $(this).children('.get-carrierCode').text() || '',
+                                flightNumber    : $(this).children('.get-flight-number').text() || '',
+                                bookingClass    : $(this).children('.flight-class').text().substring(7) || ''
+                            },
+                            contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+                            dataType:"json",
+                            success: function(response, status){
+                                if(response.status == "OK"){
+                                    $( ".btnBookSell1" ).show(); 
+                    
+                                    $('#queue-banner').append(
 
-                        $( ".btnBookSell1" ).show(); 
-                        
-                        $('#queue-banner').append(
+                                        '<div class="col-md-6 col-lg-3  eachFlight ' + thisElement.children('.get-elementclass-for-queue').text() + '" id="flight'  + flightID + '">' +
+                                            '<div class="alert text-center flight-queue eachSegments" id="thisSegment' + flightID + '" style="margin: auto; margin-top: 10px;"> ' +
+                                                '<button type="button" aria-hidden="true" class="close btnRemoveFlight" id="flightRmvBtn' + flightID + '" style="color:black">×<span style="display:none;">' + thisElement.children('.get-flight-isConnecting').text() + thisElement.children('.get-flight-number').text() + '</span></button>' +
+                                                '<br>' +
+                                                '<p class="queue-destination-text">' + thisElement.children('.get-flight-departure').text() +' <i class="material-icons">airplanemode_active</i> ' + thisElement.children('.get-flight-arrival').text() + '</p>' +
+                                                '<h3 class="queue-number-text eachFlightIdentifier">' + thisElement.children('.get-flight-number').text() + '('+ thisElement.children('.flight-class').text().substring(7) +')</h3>' +
+                                                '<span id="get-segment-number' + flightID + '" style="display:none;">' + thisElement.children('.get-flight-number').text() + '</span>' +
+                                                '<span id="get-segment-date' + flightID + '" style="display:none;">' + thisElement.children('.get-flight-date').text() + '</span>' +
+                                                '<span id="get-segment-departure' + flightID + '" style="display:none;">' + thisElement.children('.get-flight-departure').text() + '</span>' +
+                                                '<span id="get-segment-arrival' + flightID + '" style="display:none;">' + thisElement.children('.get-flight-arrival').text() + '</span>' +
+                                                '<span id="get-segment-class' + flightID + '" style="display:none;">' + thisElement.children('.flight-class').text().substring(7) + '</span>' +
+                                                '<span id="get-segment-time' + flightID + '" style="display:none;">' + thisElement.children('.get-flight-time').text() + '</span>' +
+                                                '<span id="get-flight-ITR-origin' + flightID + '" style="display:none;">' + thisElement.children('.get-flight-ITR-origin').text() + '</span>' +
+                                                '<span id="get-flight-ITR-destination' + flightID + '" style="display:none;">' + thisElement.children('.get-flight-ITR-destination').text() + '</span>' +
+                                                '<span class="get-availability-count" style="display:none;">' + thisElement.children('.get-flight-number').text() + thisElement.children('.flight-class').text().substring(7) + thisElement.children('.flight-availability').text().substring(14) +'</span>' +
+                                                '<span id="get-flight-class-for-queue' + thisElement.children('.get-flight-number').text() + '" style="display:none;">' + thisElement.children('.get-elementclass-for-queue').text() + '</span>' +
+                                                '<span id="get-carrier-code' + flightID + '" style="display:none;">' + thisElement.children('.get-carrierCode').text() + '</span>' +
+                                            '</div>' +
+                                        '</div>'
+                                        
+                                    );
 
-                            '<div class="col-md-6 col-lg-3  eachFlight ' + $(this).children('.get-elementclass-for-queue').text() + '" id="flight'  + flightID + '">' +
-                                '<div class="alert text-center flight-queue eachSegments" id="thisSegment' + flightID + '" style="margin: auto; margin-top: 10px;"> ' +
-                                    '<button type="button" aria-hidden="true" class="close btnRemoveFlight" id="flightRmvBtn' + flightID + '" style="color:black">×<span style="display:none;">' + $(this).children('.get-flight-isConnecting').text() + $(this).children('.get-flight-number').text() + '</span></button>' +
-                                    '<br>' +
-                                    '<p class="queue-destination-text">' + $(this).children('.get-flight-departure').text() +' <i class="material-icons">airplanemode_active</i> ' + $(this).children('.get-flight-arrival').text() + '</p>' +
-                                    '<h3 class="queue-number-text eachFlightIdentifier">' + $(this).children('.get-flight-number').text() + '('+ $(this).children('.flight-class').text().substring(7) +')</h3>' +
-                                    '<span id="get-segment-number' + flightID + '" style="display:none;">' + $(this).children('.get-flight-number').text() + '</span>' +
-                                    '<span id="get-segment-date' + flightID + '" style="display:none;">' + $(this).children('.get-flight-date').text() + '</span>' +
-                                    '<span id="get-segment-departure' + flightID + '" style="display:none;">' + $(this).children('.get-flight-departure').text() + '</span>' +
-                                    '<span id="get-segment-arrival' + flightID + '" style="display:none;">' + $(this).children('.get-flight-arrival').text() + '</span>' +
-                                    '<span id="get-segment-class' + flightID + '" style="display:none;">' + $(this).children('.flight-class').text().substring(7) + '</span>' +
-                                    '<span id="get-segment-time' + flightID + '" style="display:none;">' + $(this).children('.get-flight-time').text() + '</span>' +
-                                    '<span id="get-flight-ITR-origin' + flightID + '" style="display:none;">' + $(this).children('.get-flight-ITR-origin').text() + '</span>' +
-                                    '<span id="get-flight-ITR-destination' + flightID + '" style="display:none;">' + $(this).children('.get-flight-ITR-destination').text() + '</span>' +
-                                    '<span class="get-availability-count" style="display:none;">' + $(this).children('.get-flight-number').text() + $(this).children('.flight-class').text().substring(7) + $(this).children('.flight-availability').text().substring(14) +'</span>' +
-                                    '<span id="get-flight-class-for-queue' + $(this).children('.get-flight-number').text() + '" style="display:none;">' + $(this).children('.get-elementclass-for-queue').text() + '</span>' +
-                                    '<span id="get-carrier-code' + flightID + '" style="display:none;">' + $(this).children('.get-carrierCode').text() + '</span>' +
-                                '</div>' +
-                            '</div>'
-                            
-                        );
+                                    $('.modal' + selectedModalID.substring(3)).modal('hide');
 
-                        $('.modal' + selectedModalID.substring(3)).modal('hide');
+                                    // getAvailability($(this).children('.flight-availability').text().substring(14), $(this).children('.get-flight-number').text());
 
-                        // getAvailability($(this).children('.flight-availability').text().substring(14), $(this).children('.get-flight-number').text());
+                                    $("#flightRmvBtn" + flightID).click(function(){
+                                        var first_div = $(this).parent();
+                                        var main_div = $(first_div).parent();
+                                        
+                                        
+                                        if($(this).text().substring(1, 5) == "true"){
+                                            showNotif('top','right', 'warning', 'All connected flights are also removed', 'warning');
 
-                        $("#flightRmvBtn" + flightID).click(function(){
-                            var first_div = $(this).parent();
-                            var main_div = $(first_div).parent();
-                            
-                            
-                            if($(this).text().substring(1, 5) == "true"){
-                                showNotif('top','right', 'warning', 'All connected flights are also removed', 'warning');
+                                           
+                                            var classToDelete = $("#get-flight-class-for-queue" + $(this).text().substring(5)).text();
+                                            
+                                            $("." + classToDelete).each(function(i, obj) {
+                                                $(this).remove();
+                                            });
+                                            
+                                            if($('.eachFlight').length == 0){
+                                                $('.btnBookSell1').hide();    
+                                            }
+                                            
+                                        }else{
+                                            $(main_div).remove();
+                                            if($('.eachFlight').length == 0){
+                                                $('.btnBookSell1').hide();
+                                            }
+                                        }
+                                        
 
-                               
-                                var classToDelete = $("#get-flight-class-for-queue" + $(this).text().substring(5)).text();
-                                
-                                $("." + classToDelete).each(function(i, obj) {
-                                    $(this).remove();
-                                });
-                                
-                                if($('.eachFlight').length == 0){
-                                    $('.btnBookSell1').hide();    
-                                }
-                                
-                            }else{
-                                $(main_div).remove();
-                                if($('.eachFlight').length == 0){
-                                    $('.btnBookSell1').hide();
-                                }
-                            }
-                            
+                                        
+                                         
+                                    });
 
-                            
-                             
-                        });
+                                    if(thisElement.children('.get-flight-isConnecting').text() == "true"){
+                                        
+                                        var connectingElementClass = isConnectingFlight + thisElement.children('.get-flight-lineNumber').text() + thisElement.children('.flight-class').text().substring(7);
+                                        var cardClassID = $(this).attr('id');
+                                        
+                                        
 
-                        if($(this).children('.get-flight-isConnecting').text() == "true"){
-                            
-                            var connectingElementClass = isConnectingFlight + $(this).children('.get-flight-lineNumber').text() + $(this).children('.flight-class').text().substring(7);
-                            var cardClassID = $(this).attr('id');
-                            
-                            
-
-                            if(!dontDoubleClick){
-                                dontDoubleClick = true
-                                $('.' + connectingElementClass).each(function(i, obj) {
-                                    if($(this).attr('id') != cardClassID){
-                                        $(this).click();
-                                        showNotif('top','right', 'warning', 'All connected flights are added', 'warning');
+                                        if(!dontDoubleClick){
+                                            dontDoubleClick = true
+                                            $('.' + connectingElementClass).each(function(i, obj) {
+                                                if($(this).attr('id') != cardClassID){
+                                                    $(this).click();
+                                                    showNotif('top','right', 'warning', 'All connected flights are added', 'warning');
+                                                }
+                                            });
+                                            dontDoubleClick = false;
+                                        }
+                                        
                                     }
-                                });
-                                dontDoubleClick = false;
+
+                                    $('.loading').hide();
+                                }else{
+                                    $('.loading').hide();
+                                    showNotif('top','right', 'danger', 'Flight not available on sell recommendation. Please choose another flight.', 'clear');
+                                }
                             }
-                            
-                        }
+                        })
+
+                        
                     }
 
                 }
@@ -661,46 +750,47 @@
 
         function isFlightSelected(flightElementClass) {
             $("." + flightElementClass).click(function(){
-            selectedModalID = $(this).attr('id');
-            var showThisModal = true;
-            if($('.eachSegments').length != 0){
-                $('.eachSegments').each(function(i, obj) {
-                    
-                    var thisIdSegmentForChecking = $(this).attr("id").substring(11);
-                    if($(this).children('#get-segment-number' + thisIdSegmentForChecking).text() == selectedModalID.substring(3)){
-                        showThisModal = false;
+
+                selectedModalID = $(this).attr('id');
+                var showThisModal = true;
+                if($('.eachSegments').length != 0){
+                    $('.eachSegments').each(function(i, obj) {
+                        
+                        var thisIdSegmentForChecking = $(this).attr("id").substring(11);
+                        if($(this).children('#get-segment-number' + thisIdSegmentForChecking).text() == selectedModalID.substring(3)){
+                            showThisModal = false;
+                        }
+
+                    });
+
+                    if(showThisModal){
+                        $('.modal' + selectedModalID.substring(3)).modal('show');
+                        showThisModal = true;
+                    }else{
+                        showNotif('top','right', 'danger', 'Class is already selected on this flight', 'clear');
                     }
-
-                });
-
-                if(showThisModal){
-                    $('.modal' + selectedModalID.substring(3)).modal('show');
-                    showThisModal = true;
                 }else{
-                    showNotif('top','right', 'danger', 'Class is already selected on this flight', 'clear');
+                    $('.modal' + selectedModalID.substring(3)).modal('show');
                 }
-            }else{
-                $('.modal' + selectedModalID.substring(3)).modal('show');
-            }
             
 
-        });
+            });
         }
 
         
 
-        // function getAvailability(availability, flightNumber) {
+
+        $('.carrierFilter').click(function( event ) {
+            var carrierCode = $(this).text().substring(12);
+            if(carrierCode == "rier"){
+                $('.availabilityResults').show();
+            }else{
+                $('.availabilityResults').hide();
+                $('.' + carrierCode).show();
+            }
             
-        //     arrayForPassengerLimit[ctrForPassengerLimit] = {
-        //         'flight' : flightNumber,
-        //         'availability' : availability
-
-        //     };
-
-        //     ctrForPassengerLimit = ctrForPassengerLimit + 1;
-        //     allowedPassenger = allowedPassenger + parseInt(availability);
-        //     alert(arrayForPassengerLimit);
-        // }
+        });
+        
 
         $('#frmAvailability').submit(function( event ) {
             $('.loading').show();
@@ -745,7 +835,7 @@
                             }
 
                             $('#showResults').append(
-                                '<div class="col-md-4 col-sm-6 col-xs-6 col-lg-2 flightsRslt"  id="rsl' + flight.flightDetails.flightNumber + '"  style="cursor: pointer">' +
+                                '<div class="col-md-4 col-sm-6 col-xs-6 col-lg-2 ' + flight.flightDetails.carrierCode + ' availabilityResults flightsRslt"  id="rsl' + flight.flightDetails.flightNumber + '"  style="cursor: pointer">' +
                                     '<div class="card alert alert-' + colorType + '">' +
                                         '<div class="col-md-6 text-center">' +
                                             '<h3>' + flight.flightDetails.departure.location + '</h3>' +
@@ -861,7 +951,7 @@
                                         }
 
                                         $('#showResultsRoundTrip').append(
-                                            '<div class="col-md-4 col-sm-6 col-xs-6 col-lg-2 flightsRslt classToLoopOnCheck" id="rsl' + flight.flightDetails.flightNumber + '"  style="cursor: pointer">' +
+                                            '<div class="col-md-4 col-sm-6 col-xs-6 col-lg-2 ' + flight.flightDetails.carrierCode + ' availabilityResults flightsRslt classToLoopOnCheck" id="rsl' + flight.flightDetails.flightNumber + '"  style="cursor: pointer">' +
                                                 '<div class="card alert alert-' + colorType + '">' +
                                                     '<div class="col-md-6 text-center">' +
                                                         '<h3>' + flight.flightDetails.departure.location + '</h3>' +
@@ -940,103 +1030,7 @@
                                     isFlightSelected('classToLoopOnCheck');
 
                                     classIsClick(".class-card-idRounTrip", "connectingIDRT");
-                                    // $(".class-card-idRounTrip").click(function(){
-                                    //     flightID = flightID + 1;
-                                    //     var toIdentify = $(this).children('.get-flight-number').text() + '(' + $(this).children('.flight-class').text().substring(7) + ')';
-
-                                    //     var isRepeat = false;
-                                    //     $('.eachFlightIdentifier').each(function(i, obj) {
-
-                                    //         if($(this).text() == toIdentify){
-                                    //             alert('Class is already selected');
-                                    //             isRepeat = true;
-                                    //             return false;
-                                    //         }
-                                    //     });
-
-                                    //     if(!isRepeat){
-
-                                    //         $( ".btnBookSell1" ).show(); 
-                                            
-                                    //         $('#queue-banner').append(
-
-                                    //             '<div class="col-md-4   eachFlight ' + $(this).children('.get-elementclass-for-queue').text() + '" id="flight'  + flightID + '">' +
-                                    //                 '<div class="alert text-center flight-queue eachSegments" id="thisSegment' + flightID + '" style="margin: auto; margin-top: 10px;"> ' +
-                                    //                     '<button type="button" aria-hidden="true" class="close btnRemoveFlight" id="flightRmvBtn' + flightID + '" style="color:black">×<span style="display:none;">' + $(this).children('.get-flight-isConnecting').text() + $(this).children('.get-flight-number').text() + '</span></button>' +
-                                    //                     '<br>' +
-                                    //                     '<p class="queue-destination-text">' + $(this).children('.get-flight-departure').text() +' <i class="material-icons">airplanemode_active</i> ' + $(this).children('.get-flight-arrival').text() + '</p>' +
-                                    //                     '<h3 class="queue-number-text eachFlightIdentifier">' + $(this).children('.get-flight-number').text() + '('+ $(this).children('.flight-class').text().substring(7) +')</h3>' +
-                                    //                     '<span id="get-segment-number' + flightID + '" style="display:none;">' + $(this).children('.get-flight-number').text() + '</span>' +
-                                    //                     '<span id="get-segment-date' + flightID + '" style="display:none;">' + $(this).children('.get-flight-date').text() + '</span>' +
-                                    //                     '<span id="get-segment-departure' + flightID + '" style="display:none;">' + $(this).children('.get-flight-departure').text() + '</span>' +
-                                    //                     '<span id="get-segment-arrival' + flightID + '" style="display:none;">' + $(this).children('.get-flight-arrival').text() + '</span>' +
-                                    //                     '<span id="get-segment-class' + flightID + '" style="display:none;">' + $(this).children('.flight-class').text().substring(7) + '</span>' +
-                                    //                     '<span id="get-segment-time' + flightID + '" style="display:none;">' + $(this).children('.get-flight-time').text() + '</span>' +
-                                    //                     '<span id="get-flight-ITR-origin' + flightID + '" style="display:none;">' + $(this).children('.get-flight-ITR-origin').text() + '</span>' +
-                                    //                     '<span id="get-flight-ITR-destination' + flightID + '" style="display:none;">' + $(this).children('.get-flight-ITR-destination').text() + '</span>' +
-                                    //                     '<span class="get-availability-count" style="display:none;">' + $(this).children('.get-flight-number').text() + $(this).children('.flight-class').text().substring(7) + $(this).children('.flight-availability').text().substring(14) +'</span>' +
-                                    //                     '<span id="get-flight-class-for-queue' + $(this).children('.get-flight-number').text() + '" style="display:none;">' + $(this).children('.get-elementclass-for-queue').text() + '</span>' +
-                                    //                 '</div>' +
-                                    //             '</div>'
-                                                
-                                    //         );
-
-                                    //         $('.modal' + selectedModalID.substring(3)).modal('hide');
-
-                                    //         $("#flightRmvBtn" + flightID).click(function(){
-                                    //             var first_div = $(this).parent();
-                                    //             var main_div = $(first_div).parent();
-                                                
-                                    //             var confirmation = confirm("Delete this flight?");
-                                               
-
-                                    //             if(confirmation){
-                                    //                 if($(this).text().substring(1, 5) == "true"){
-                                    //                     alert("All connected flights are also removed");
-                                                       
-                                    //                     var classToDelete = $("#get-flight-class-for-queue" + $(this).text().substring(5)).text();
-                                                        
-                                    //                     $("." + classToDelete).each(function(i, obj) {
-                                    //                         $(this).remove();
-                                    //                     });
-                                                        
-                                    //                     if($('.eachFlight').length == 0){
-                                    //                         $('.btnBookSell1').hide();    
-                                    //                     }
-                                                        
-                                    //                 }else{
-                                    //                     $(main_div).remove();
-                                    //                     if($('.eachFlight').length == 0){
-                                    //                         $('.btnBookSell1').hide();
-                                    //                     }
-                                    //                 }
-                                    //             }
-
-                                                
-                                                 
-                                    //         });
-
-                                    //         if($(this).children('.get-flight-isConnecting').text() == "true"){
-                                                
-                                    //             var connectingElementClass = "connectingIDRT" + $(this).children('.get-flight-lineNumber').text() + $(this).children('.flight-class').text().substring(7);
-                                    //             var cardClassID = $(this).attr('id');
-                                                
-                                                
-
-                                    //             if(!dontDoubleClick2){
-                                    //                 dontDoubleClick2 = true
-                                    //                 $('.' + connectingElementClass).each(function(i, obj) {
-                                    //                     if($(this).attr('id') != cardClassID){
-                                    //                         $(this).click();
-                                    //                         alert('This flight is a connecting flight. All connected flights with this schedule are added.');
-                                    //                     }
-                                    //                 });
-                                    //                 dontDoubleClick2 = false;
-                                    //             }
-                                                
-                                    //         }
-                                    //     }
-                                    // });
+                                   
                                         
 
                                 },
@@ -1056,23 +1050,7 @@
                     error: function (jqXHR, exception) {
                         $('.loading').hide();
                         showNotif('top','right', 'danger', 'No results found', 'clear');
-                        // var msg = '';
-                        // if (jqXHR.status === 0) {
-                        //     msg = 'Not connect.\n Verify Network.';
-                        // } else if (jqXHR.status == 404) {
-                        //     msg = 'Requested page not found. [404]';
-                        // } else if (jqXHR.status == 500) {
-                        //     msg = 'Internal Server Error [500].';
-                        // } else if (exception === 'parsererror') {
-                        //     msg = 'Requested JSON parse failed.';
-                        // } else if (exception === 'timeout') {
-                        //     msg = 'Time out error.';
-                        // } else if (exception === 'abort') {
-                        //     msg = 'Ajax request aborted.';
-                        // } else {
-                        //     msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                        // }
-                        // alert(msg);
+                        
                     },
                 })
 
@@ -1338,72 +1316,7 @@
                     arrayOFItineraryCtr = arrayOFItineraryCtr + 1;
                     segments = [];
 
-                    // var thisIdSegment = $(this).attr("id").substring(11);
-                    // if(previousItineraryOrigin == "" || previousItineraryOrigin == $(this).children('#get-flight-ITR-origin' + thisIdSegment).text()){
-                            
-                    //     if(previousItineraryDestination == "" || previousItineraryDestination == $(this).children('#get-flight-ITR-destination' + thisIdSegment).text()){
-                    //         previousItineraryOrigin = $(this).children('#get-flight-ITR-origin' + thisIdSegment).text();
-                    //         previousItineraryDestination = $(this).children('#get-flight-ITR-destination' + thisIdSegment).text();
-                    //     }else{
-                    //         isNewItinerary = true;
-                            
-
-                    //     }
-
-                    // }else{
-                    //     isNewItinerary = true;
-                        
-
-                    // }
                     
-                    // if(isNewItinerary){
-                    //     eachItinerary = {
-                    //         origin      : previousItineraryOrigin,
-                    //         destination : previousItineraryDestination,
-                    //         segments    : segments
-                    //     };
-                    //     segments = [];
-                    //     segmentReset = 0;
-                    //     itineraries.push(eachItinerary);
-                    //     eachItinerary = {};
-                    //     isNewItinerary = false;
-                    //     previousItineraryOrigin = $(this).children('#get-flight-ITR-origin' + thisIdSegment).text();
-                    //     previousItineraryDestination = $(this).children('#get-flight-ITR-destination' + thisIdSegment).text();
-                    // }
-
-                    // var formattedDate = moment($(this).children('#get-segment-date' + thisIdSegment).text(), 'DDMMYY').format('YYYY-MM-DD') 
-                    // originalDate = formattedDate + ' ' + $(this).children('#get-segment-time' + thisIdSegment).text();
-                    // segments[segmentReset] = {
-                    //     "date": originalDate, 
-
-                    //     "origin": $(this).children('#get-segment-departure' + thisIdSegment).text(), 
-
-                    //     "destination": $(this).children('#get-segment-arrival' + thisIdSegment).text(), 
-
-                    //     "flightNumber": $(this).children('#get-segment-number' + thisIdSegment).text() , 
-
-                    //     "bookingClass": $(this).children('#get-segment-class' + thisIdSegment).text(), 
-
-                    //     "company": "5J"
-
-                    // }
-
-                    // segmentReset = segmentReset + 1;
-                    // segmentCTR = segmentCTR + 1;
-                    // if(segmentCTR == totalSegments){
-                    //     eachItinerary = {
-                    //         origin      : $(this).children('#get-flight-ITR-origin' + thisIdSegment).text(),
-                    //         destination : $(this).children('#get-flight-ITR-destination' + thisIdSegment).text(),
-                    //         segments    : segments
-                    //     };
-                    //     segments = [];
-                    //     segmentReset = 0;
-                    //     itineraries.push(eachItinerary);
-                    //     eachItinerary = {};
-                    //     isNewItinerary = false;
-                    //     previousItineraryOrigin = $(this).children('#get-flight-ITR-origin' + thisIdSegment).text();
-                    //     previousItineraryDestination = $(this).children('#get-flight-ITR-destination' + thisIdSegment).text();
-                    // }
 
                 });
 

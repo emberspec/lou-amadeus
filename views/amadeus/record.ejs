@@ -27,36 +27,9 @@
 
     <div class="wrapper">
 
-        <div class="sidebar" data-color="blue" data-image="../assets/img/sidebar-1.jpg">
-            <!--
-            Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+        <% include partials/sidebar %>
 
-            Tip 2: you can also add an image using data-image tag
-            -->
-            <div class="logo">
-                <a href="#" class="simple-text">
-                    ESALES
-                </a>
-            </div>
-            <div class="sidebar-wrapper">
-                <ul class="nav">
-                    <li class="active">
-                        <a href="./availability">
-                            <i class="material-icons">dashboard</i>
-                            <p>Flights Availability</p>
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a href="./record">
-                            <i class="material-icons">list</i>
-                            <p>PNR Records</p>
-                        </a>
-                    </li>
-
-                </ul>
-            </div>
-        </div>
-        <div class="main-panel">
+        <div class="main-panel" id="main">
 
             <nav class="navbar navbar-transparent navbar-absolute">
                 <div class="container-fluid">
@@ -251,10 +224,11 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
-
+<script src="../assets/js/styleActions.js"></script>
 <script type="text/javascript">
 
     $( document ).ready(function() {
+        
 
         function showNotif(from, align, color, message, icon) {
 

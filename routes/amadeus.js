@@ -177,84 +177,67 @@ router.post('/record', (req, res, next) => {
 });
 
 router.post('/recommendation', (req, res, next) => {
-	let arrayIndexSell = 0;
-	let eachSegmentSell = {};
-	let sellSegments = [];
-	let sellItineraries = [];
-
-	for (var key in req.body) {
-
-		if(key.substring(12,16) == "date"){
-			eachSegmentSell['date'] = req.body[key];
-		}
-
-		if(key.substring(12,16) == "city"){
-			eachSegmentSell['cityCode'] =  req.body[key];
-		}
-
-		if(key.substring(12,16) == "free"){
-			eachSegmentSell['freeText'] =  req.body[key];
-		}
-		
-		if(key.substring(12,16) == "orig"){
-			eachSegmentSell['origin'] =  req.body[key];
-		}
-
-		if(key.substring(12,16) == "dest"){
-			eachSegmentSell['destination'] =  req.body[key];
-		}
-
-		if(key.substring(12,16) == "flig"){
-			eachSegmentSell['flightNumber'] =  req.body[key];
-		}
-
-		if(key.substring(12,16) == "book"){
-			eachSegmentSell['bookingClass'] =  req.body[key];
-		}
-
-		if(key.substring(12,16) == "comp"){
-			eachSegmentSell['company'] =  req.body[key];
-		}
-
-		if(key.substring(12,16) == "type"){
-			eachSegmentSell['type'] =  req.body[key];
-		}
-
-		arrayIndexSell = arrayIndexSell + 1;	
-
-		if(arrayIndexSell == 9){
-			segments.push(eachSegmentSell);
-			eachSegmentSell = {};
-			arrayIndexSell= 0;
-		}
-
-	}
-
 	
-
-
-	sellItineraries[0] = {
-		segments : segments
-	};
-
 	request.post({
-	    url: 'http://esales.limcontravel.com/api/amadeus/air/sellfromrecommendation',
+	    url: 'http://amadeus.wjandpconstruction.com/api/amadeus/air/sellfromrecommendation',
 	    json: true,
 	    form: {
-	    	itineraries  : sellItineraries || ''
+	    	departure_date  : req.body.departure_date || '',
+	    	from  : req.body.from || '',
+	    	to  : req.body.to || '',
+	    	companyCode  : req.body.companyCode || '',
+	    	flightNumber  : req.body.flightNumber || '',
+	    	bookingClass  : req.body.bookingClass || '',
+	    	nrOfPassengers  : 1 || '',
+
 	    }
 	}, function (error, response, body) {
 
-	    if (!error && response.statusCode === 200) {
-	    	console.log(body);
-	    	if(body.code == 100){
-	    		res.send(body.data.message.messageFunctionDetails.messageFunction);
-	    	}
+	    // if (!error && body.status === "OK") {
+
+
+	    // 	//console.log(body);
+	    // 	res.send("OKAY");
 	    	
-	    }else{
-	    	res.send(console.log(body.data));
-	    }
+	    	
+	    // }else{
+	    // 	//console.log(body.data);
+	    // 	res.send("ERROR");
+	    // }
+	    res.send(body);
 	});
+});
+
+
+
+router.get('/IBEavailability', (req, res, next) => {
+	//console.log(localStorage.getItem('isLogin'));
+	if (localStorage.getItem('isLogin') === "true") {
+		res.render('amadeus/ibeAvailability');
+	}else{
+		res.redirect("/login");	
+	}
+	
+});
+
+router.post('/IBEavailability', (req, res, next) => {
+
+	request.post({
+	    url: 'http://amadeus.wjandpconstruction.com/api/amadeus/fare/masterpricer',
+	    json: true,
+	    form: {
+	    	nrOfRequestedResults  : parseInt(req.body.nrOfRequestedResults) || '',
+	    	nrOfRequestedPassengers  : parseInt(req.body.nrOfRequestedPassengers) || '',
+	    	departureLocation  : req.body.departureLocation || '',
+	    	arrivalLocation  : req.body.arrivalLocation || '',
+	    	departureDate  : req.body.departureDate || '',
+	    	departureTime  : req.body.departureTime || ''
+	    }
+	}, function (error, response, body) {
+		console.log(response);
+	    res.send(body.response);
+	});
+	
 });
 
 
