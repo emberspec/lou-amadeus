@@ -96,9 +96,9 @@
                 </div>
             </nav>
             <div class="content">
-                <div class="container-fluid">
+                <div class="container-fluid" >
 
-                    <div class="col-lg-3 col-md-5 col-sm-6 col-xs-12" id="">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="" style="max-width:1086px; margin:auto !important; float:none !important">
                         <div class="card " >
                             <div class="card-header" data-background-color="blue">
                                 <h4 class="title">Search Flight</h4> 
@@ -106,7 +106,7 @@
                             <div class="card-content">
                                 <form id="frmAvailability" autocomplete="off">   
 
-                                    <div class="col-lg-6 col-md-12" style="padding-left: 5px !important">
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="padding-left: 5px !important">
                                         <div class="form-group label-floating is-empty">
                                             <label class="control-label">Origin</label>
                                             <input type="text" id="txtOrigin" pattern="[A-Za-z]{3}" class="form-control txtField" required>
@@ -114,7 +114,7 @@
                                         <span class="material-input"></span></div>
                                     </div>
 
-                                    <div class="col-lg-6 col-md-12">
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                                         <div class="form-group label-floating is-empty">
                                             <label class="control-label">Destination</label>
                                             <input type="text" id="txtDestination" pattern="[A-Za-z]{3}" class="form-control txtField" required>
@@ -122,7 +122,7 @@
                                         <span class="material-input"></span></div>
                                     </div>
 
-                                    <div class="col-lg-6 col-md-12">
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                                         <div class="form-group label-floating is-empty">
                                             <label class="control-label">Departure Date</label>
                                             <input type="text" id="txtDepartureDate" class="form-control datepicker txtField" required>
@@ -130,35 +130,35 @@
                                         <span class="material-input"></span></div>
                                     </div>
 
-                                    <div class="col-lg-6 col-md-12">
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                                         <div class="form-group label-floating is-empty">
                                             <label class="control-label">Departure Time</label>
                                             <input id="txtDepartureTime" type="text" class="time form-control  timeFields" />
                                         <span class="material-input"></span></div>
                                     </div>
 
-                                    <div class="col-lg-6 col-md-12">
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="display:none">
                                         <div class="form-group label-floating is-empty">
                                             <label class="control-label">Return Date</label>
                                             <input type="text" id="txtReturnDate" class="form-control  " disabled="">
                                         <span class="material-input"></span></div>
                                     </div>
 
-                                    <div class="col-lg-6 col-md-12">
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="display:none">
                                         <div class="form-group label-floating is-empty">
                                             <label class="control-label">Return Time</label>
                                             <input id="txtReturnTime" type="text" class="time form-control timeFields" disabled="" />
                                         <span class="material-input"></span></div>
                                     </div>
 
-                                    <div class="col-lg-6 col-md-12">
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                                         <div class="form-group label-floating is-empty">
                                             <label class="control-label">Passengers</label>
                                             <input type="number" id="txtPassengers" class="form-control" min="1" max="9">
                                         <span class="material-input"></span></div>
                                     </div>
 
-                                    <div class="col-lg-6 col-md-12">
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                                         <div class="form-group label-floating is-empty">
                                             <label class="control-label">Results</label>
                                             <input type="number" id="txtResults" class="form-control" min="1">
@@ -174,27 +174,11 @@
                         </div>
 
 
-                        <div class="card ">
-                            <div class="card-content">
-                                <h4 class="title">FILTERS</h4>
-                                <br>
-                                <label>Filter Carrier</label>
-                                <div id="dd" class="wrapper-dropdown-3 " tabindex="1">
-                                    <span>Show all carrier</span>
-                                    <ul class="dropdown">
-                                        <li><a href="#" class="carrierFilter">Show all carrier</a></li>
-                                        <li><a href="#" class="carrierFilter">Show only : 5J</a></li>
-                                        <li><a href="#" class="carrierFilter">Show only : PR</a></li>
-                                        <li><a href="#" class="carrierFilter">Show only : EY</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            
-                        </div>
+
 
                     </div>
                     
-                    <div class="col-lg-9 col-md-7 col-sm-6 col-xs-12" id="ibeResults">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"  style="max-width:1086px; margin:auto !important; float:none !important"">
                         <div class=" col-sm-12 col-xs-12 toShowUponSearch" style="margin-bottom: 5px; display:none;">
 
                             <span class="new badge pull-right" style="color:white; background-color:#ffa21a; margin-left: 5px;" data-badge-caption="custom caption">Connecting Flights</span>
@@ -203,6 +187,8 @@
                             <br>
 
                         </div>
+
+                        <div id="ibeResults"></div>
                         
                     </div>
 

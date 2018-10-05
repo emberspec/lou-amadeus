@@ -1,5 +1,6 @@
 $( document ).ready(function() {
 
+
     $('#txtDepartureDate').datepicker({
         format: 'yyyy-mm-dd',
         startDate: '0d'
